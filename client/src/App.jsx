@@ -7,6 +7,8 @@ import { HomePage } from './pages/HomePage/HomePage';
 import { LoginPage } from './pages/LoginPage/LoginPage'
 import { RegisterPage } from './pages/RegisterPage/RegisterPage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage/ResetPasswordPage'
+import { DashboardPage } from './pages/DashboardPage/DashboardPage'
+import { TransactionsPage } from './pages/TransactionsPage/TransactionsPage'
 
 function App() {
   const router = createBrowserRouter([
@@ -19,16 +21,24 @@ function App() {
           element: <HomePage />,
         },
         {
-          path: '/login',
+          path: 'login',
           element: <LoginPage />,
         },
         {
-          path: '/register',
+          path: 'register',
           element: <RegisterPage />,
         },
         {
-          path: '/reset-password',
+          path: 'reset-password',
           element: <ResetPasswordPage />,
+        },
+        {
+          path: 'dashboard',
+          element: <DashboardPage />,
+        },
+        {
+          path: 'transactions',
+          element: <TransactionsPage />,
         }
       ],
     },
