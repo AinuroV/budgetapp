@@ -8,8 +8,6 @@ const Category = sequelize.define('category', {
     isTypeIncome: { type: DataTypes.BOOLEAN, allowNull: false},
     limit: {type: DataTypes.INTEGER, allowNull: false},
     sum: {type: DataTypes.INTEGER, allowNull: true},
-
-
 }) 
 
 module.exports = Category

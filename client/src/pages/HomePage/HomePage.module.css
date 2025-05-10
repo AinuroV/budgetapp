@@ -1,0 +1,92 @@
+.homePage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.homePage main {
+  flex: 1;
+}
+
+/* Добавляем в HeroSection.module.css */
+.heroImage {
+  transition: transform 0.3s ease;
+}
+
+.heroImage:hover {
+  transform: scale(1.05);
+}
+
+
+.faq {
+  padding: 80px 0;
+  background-color: var(--color-bg-secondary);
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  color: var(--color-text-primary);
+}
+
+.faqItems {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faqItem {
+  margin-bottom: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--color-bg-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.faqQuestion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.faqQuestion:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.faqQuestionText {
+  margin-right: 16px;
+}
+
+.faqIcon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+}
+
+.faqAnswer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.faqAnswerContent {
+  padding: 0 20px 20px;
+}
+
+.faqItem.active .faqAnswer {
+  border-top: 1px solid var(--color-border);
+}

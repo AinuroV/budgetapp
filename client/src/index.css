@@ -23,3 +23,21 @@
 body{
   font-family: 'Roboto', sans-serif;
 }
+
+.animated-image {
+  animation: float 3s ease-in-out infinite, pulse 1.5s infinite alternate;
+  filter: drop-shadow(0 8px 15px rgba(37, 127, 255, 0.4));
+  transition: all 0.3s ease;
+}
+
+/* Эффект при наведении */
+.animated-image:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 10px 20px rgba(37, 127, 255, 0.6));
+}
+
+.block-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,65 @@
+.header {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.navLink:hover {
+  color: #4a6fa5;
+}
+
+.registerBtn {
+  background-color: #4a6fa5;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.registerBtn:hover {
+  background-color: #3a5a80;
+  color: white;
+}
+
+.logoutBtn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.logoutBtn:hover {
+  text-decoration: underline;
+}
