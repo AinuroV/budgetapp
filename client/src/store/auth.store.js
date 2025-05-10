@@ -11,6 +11,7 @@ export const useAuthStore = create(
       isAuth: false,
       isLoading: false,
       error: null,
+      isSuccesReset:false,
 
       // Методы
       login: async (email, password) => {
@@ -25,7 +26,8 @@ export const useAuthStore = create(
           });
 
           if (!response.ok) {
-            throw new Error('Неверные учетные данные');
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Ошибка входа');
           }
 
           const { token, user } = await response.json();
@@ -95,7 +97,7 @@ export const useAuthStore = create(
       },
 
       resetPassword: async (email) => {
-        set({ isLoading: true, error: null });
+        set({ isLoading: true, error: null,isSuccesReset:false });
         try {
           const response = await fetch('http://localhost:3000/api/auth/reset-password', {
             method: 'POST',
@@ -106,16 +108,18 @@ export const useAuthStore = create(
           });
 
           if (!response.ok) {
-            throw new Error('Ошибка сброса пароля');
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Ошибка сброса пароля');
           }
 
-          set({ isLoading: false });
+          set({ isLoading: false,isSuccesReset:true });
           return true;
         } catch (error) {
           console.error('Reset password error:', error);
           set({
             error: error.message || 'Ошибка сброса пароля',
             isLoading: false,
+            isSuccesReset:false
           });
           return false;
         }
