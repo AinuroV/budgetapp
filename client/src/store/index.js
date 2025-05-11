@@ -21,25 +21,6 @@ export {
 };
 
 /**
- * Инициализируем необходимые данные при загрузке приложения
- */
-export const initializeStores = async () => {
-    const { isAuth, checkAuth } = useAuthStore.getState();
-
-    // Проверяем аутентификацию
-    await checkAuth();
-
-    // Если пользователь авторизован, загружаем данные
-    if (isAuth) {
-        useTransactionsStore.getState().fetchTransactions();
-        useCategoriesStore.getState().fetchCategories();
-        useBudgetStore.getState().fetchBudgetData();
-        useGoalsStore.getState().fetchGoals();
-        useHistoryStore.getState().fetchHistory();
-    }
-};
-
-/**
  * Сбрасываем все хранилища при выходе из системы
  */
 export const resetAllStores = () => {

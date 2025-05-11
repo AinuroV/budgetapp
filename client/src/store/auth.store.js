@@ -11,18 +11,18 @@ export const useAuthStore = create(
       isAuth: false,
       isLoading: false,
       error: null,
-      isSuccesReset:false,
+      isSuccesReset: false,
 
       // Методы
       login: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await fetch('http://localhost:3000/api/auth/login', {
+          const response = await fetch('http://localhost:4444/api/auth/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ username: email, password }),
           });
 
           if (!response.ok) {
@@ -31,7 +31,7 @@ export const useAuthStore = create(
           }
 
           const { token, user } = await response.json();
-          
+
           set({
             user,
             token,
@@ -54,12 +54,12 @@ export const useAuthStore = create(
       register: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await fetch('http://localhost:3000/api/auth/register', {
+          const response = await fetch('http://localhost:4444/api/auth/registration', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ username: email, password }),
           });
 
           if (!response.ok) {
@@ -68,7 +68,7 @@ export const useAuthStore = create(
           }
 
           const { token, user } = await response.json();
-          
+
           set({
             user,
             token,
@@ -88,16 +88,40 @@ export const useAuthStore = create(
         }
       },
 
-      logout: () => {
-        set({
-          user: null,
-          token: null,
-          isAuth: false,
-        });
+      logout: async() => {
+        const { token } = get();
+        try {
+          const response = await fetch('http://localhost:4444/api/auth/logout', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Ошибка выхода');
+          }
+
+          set({
+            user: null,
+            token: null,
+            isAuth: false,
+          });
+
+          return true;
+        } catch (error) {
+          console.error('Login error:', error);
+          set({
+            error: error.message || 'Ошибка выхода',
+            isLoading: false,
+          });
+          return false;
+        }
       },
 
       resetPassword: async (email) => {
-        set({ isLoading: true, error: null,isSuccesReset:false });
+        set({ isLoading: true, error: null, isSuccesReset: false });
         try {
           const response = await fetch('http://localhost:3000/api/auth/reset-password', {
             method: 'POST',
@@ -112,14 +136,14 @@ export const useAuthStore = create(
             throw new Error(errorData.message || 'Ошибка сброса пароля');
           }
 
-          set({ isLoading: false,isSuccesReset:true });
+          set({ isLoading: false, isSuccesReset: true });
           return true;
         } catch (error) {
           console.error('Reset password error:', error);
           set({
             error: error.message || 'Ошибка сброса пароля',
             isLoading: false,
-            isSuccesReset:false
+            isSuccesReset: false
           });
           return false;
         }
@@ -131,7 +155,7 @@ export const useAuthStore = create(
 
         set({ isLoading: true });
         try {
-          const response = await fetch('http://localhost:3000/api/auth/me', {
+          const response = await fetch('http://localhost:4444/api/auth/me', {
             headers: {
               Authorization: `Bearer ${token}`,
             },

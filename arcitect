@@ -233,7 +233,6 @@ history.store.js
     undoAction()
     setFilter()
     applyFilters()
-    getEntityHistory()
     // Автоматическая загрузка истории при авторизации
     useAuthStore.subscribe(
     (state) => state.isAuth,
@@ -289,6 +288,8 @@ transactions.store.js
         }
     );
 
+
+
 ui.store.js
     theme: 'light', // 'light' | 'dark'
     language: 'ru', // 'ru' | 'en'
@@ -306,17 +307,12 @@ ui.store.js
     toggleTheme()
     setLanguage()
     setCurrency()
-    toggleSidebar()
-    openSidebar()
-    closeSidebar()
     openModal()
     closeModal()
     closeAllModals()
     addToast()
     removeToast()
     clearToasts()
-    startLoading()
-    stopLoading()
     {
       name: 'ui-settings', // Ключ для localStorage
       partialize: (state) => ({
@@ -342,32 +338,3 @@ ui.store.js
         document.documentElement.setAttribute('data-theme', theme);
     }
     );
-
-
-
-Апи
-
-/api/auth/login
-/api/auth/register
-/api/auth/reset-password
-/api/auth/me (проверка токена)
-
-// GET /api/budget - получить общий бюджет
-// PUT /api/budget - обновить общий бюджет
-// GET /api/budget/limits - получить лимиты по категориям
-// POST /api/budget/limits - установить/обновить лимит для категории
-
-// GET /api/categories - получить все категории пользователя
-// POST /api/categories - создать новую категорию
-// PUT /api/categories/:id - обновить категорию
-// DELETE /api/categories/:id - удалить категорию
-
-// GET /api/goals - получить все цели пользователя
-// POST /api/goals - создать новую цель
-// PUT /api/goals/:id - обновить цель
-// DELETE /api/goals/:id - удалить цель
-// POST /api/goals/:id/add - добавить сумму к цели
-
-// GET /api/history - получить историю с фильтрами
-// POST /api/history - добавить запись в историю
-// POST /api/history/:id/undo - отменить действие

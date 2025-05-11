@@ -8,8 +8,8 @@ import { useHistoryStore } from './history.store';
 export const useBudgetStore = create((set, get) => ({
   // Состояние
   monthlyBudget: null,      // Общий месячный бюджет
-  categoryLimits: {},       // { categoryId: limit }
-  spendingByCategory: {},   // { categoryId: spentAmount }
+  categoryLimits: {},       // { categoryId: limit }  {1: 15000,2: 15000}
+  spendingByCategory: {},   // { categoryId: spentAmount } {1: 13250, 2: 250,}
   isLoading: false,
   error: null,
   exceededLimits: [],       // Категории, где превышен лимит

@@ -1,4 +1,3 @@
-// src/store/ui.store.js
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -9,7 +8,6 @@ export const useUIStore = create(
       theme: 'light', // 'light' | 'dark'
       language: 'ru', // 'ru' | 'en'
       currency: 'RUB', // 'RUB' | 'USD' | 'EUR'
-      sidebarOpen: true,
       modals: {
         transaction: false,
         category: false,
@@ -35,17 +33,6 @@ export const useUIStore = create(
       // Методы для валюты
       setCurrency: (currency) => {
         set({ currency });
-      },
-
-      // Методы для боковой панели
-      toggleSidebar: () => {
-        set(state => ({ sidebarOpen: !state.sidebarOpen }));
-      },
-      openSidebar: () => {
-        set({ sidebarOpen: true });
-      },
-      closeSidebar: () => {
-        set({ sidebarOpen: false });
       },
 
       // Методы для модальных окон
@@ -101,13 +88,6 @@ export const useUIStore = create(
         set({ toastNotifications: [] });
       },
 
-      // Методы для загрузки
-      startLoading: () => {
-        set({ isLoading: true });
-      },
-      stopLoading: () => {
-        set({ isLoading: false });
-      }
     }),
     {
       name: 'ui-settings', // Ключ для localStorage
@@ -115,7 +95,6 @@ export const useUIStore = create(
         theme: state.theme,
         language: state.language,
         currency: state.currency,
-        sidebarOpen: state.sidebarOpen
       }), // Сохраняем только настройки
     }
   )

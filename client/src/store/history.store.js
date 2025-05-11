@@ -191,13 +191,6 @@ export const useHistoryStore = create((set, get) => ({
 
     set({ filteredHistory: filtered });
   },
-
-  // Получение действий по конкретной сущности
-  getEntityHistory: (entityType, entityId) => {
-    return get().filteredHistory.filter(
-      a => a.entityType === entityType && a.entityId === entityId
-    );
-  }
 }));
 
 // Автоматическая загрузка истории при авторизации

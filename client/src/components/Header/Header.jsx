@@ -1,12 +1,17 @@
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation,useNavigate } from 'react-router';
 import styles from './Header.module.css';
 import { useAuthStore } from '../../store';
 
 export const Header = () => {
   const { isAuth, logout } = useAuthStore();
   const location = useLocation();
+  const navigate = useNavigate();
+
   const isPubRoute = location.pathname.startsWith('/login') || location.pathname.startsWith('/register');
-  
+  const onClickLogOut = async () => {
+    const res = await logout()
+    if (res) navigate('/')
+  }
   return (
     <header className={styles.header}>
       <div className="container">
@@ -17,7 +22,7 @@ export const Header = () => {
           </Link>
 
           <nav className={styles.nav}>
-            {!isPubRoute || isAuth ? (
+            {!isPubRoute && isAuth ? (
               <>
                 <Link to="/dashboard" className={styles.navLink}>Дашборд</Link>
                 <Link to="/transactions" className={styles.navLink}>Транзакции</Link>
@@ -26,7 +31,7 @@ export const Header = () => {
                 <Link to="/categories" className={styles.navLink}>Категории</Link>
                 <Link to="/history" className={styles.navLink}>История</Link>
                 <Link to="/settings" className={styles.navLink}>Настройки</Link>
-                <button onClick={logout} className={styles.logoutBtn}>Выйти</button>
+                <button onClick={onClickLogOut} className={styles.logoutBtn}>Выйти</button>
               </>
             ) : (
               <>

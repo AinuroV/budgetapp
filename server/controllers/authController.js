@@ -156,6 +156,27 @@ class AuthController {
             })
         }
     }
+
+    async checkAuth(req, res) {
+        try {
+            const reqUser = req.user
+            if (!reqUser) {
+                return res.status(404).json({ message: "Сессия истекла" });
+            }
+            
+            const user = await User.findOne({ where: { id: reqUser.id } })
+
+            return res.json({
+                message: 'Активная сессия',
+                userId: user.id,
+                username: user.username
+            });
+            
+        } catch (error) {
+            console.error("Check auth error:", error);
+            return res.status(500).json({ message: "Ошибка проверки авторизации" });
+        }
+    }
 }
 
 module.exports = new AuthController()

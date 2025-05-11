@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { initializeStores } from './store/index'
 import { RequireSignIn } from "./components/RequireSignIn/RequireSignIn";
 import { MainLayout } from "./components/MainLayout/MainLayout";
 import { HomePage } from './pages/HomePage/HomePage';
@@ -45,48 +43,43 @@ function App() {
         },
         {
           path: 'dashboard',
-          element: <DashboardPage />,
+          element: <RequireSignIn><DashboardPage /></RequireSignIn>,
         },
         {
           path: 'transactions',
-          element: <TransactionsPage />,
+          element: <RequireSignIn><TransactionsPage /></RequireSignIn>,
         },
         {
           path: 'budget',
-          element: <BudgetPage />,
+          element: <RequireSignIn><BudgetPage /></RequireSignIn>,
         },
         {
           path: 'settings',
-          element: <SettingsPage />,
+          element: <RequireSignIn><SettingsPage /></RequireSignIn>,
         },
         {
           path: 'support',
-          element: <SupportPage />,
+          element: <RequireSignIn><SupportPage /></RequireSignIn>,
         },
         {
           path: 'help',
-          element: <HelpPage />,
+          element: <RequireSignIn><HelpPage /></RequireSignIn>,
         },
         {
           path: 'statistics',
-          element: <StatisticsPage />
+          element: <RequireSignIn><StatisticsPage /></RequireSignIn>
         },
         {
           path: 'history',
-          element: <HistoryPage />
+          element: <RequireSignIn><HistoryPage /></RequireSignIn>
         },
         {
-          path:'categories', 
-          element:<CategoriesPage />
+          path: 'categories',
+          element: <RequireSignIn><CategoriesPage /></RequireSignIn>
         }
-
       ],
     },
   ]);
-
-  useEffect(() => {
-    initializeStores()
-  }, []);
 
   return <RouterProvider router={router} />;
 }
