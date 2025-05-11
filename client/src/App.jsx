@@ -9,8 +9,19 @@ import { RegisterPage } from './pages/RegisterPage/RegisterPage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage/ResetPasswordPage'
 import { DashboardPage } from './pages/DashboardPage/DashboardPage'
 import { TransactionsPage } from './pages/TransactionsPage/TransactionsPage'
+import { BudgetPage } from './pages/BudgetPage/BudgetPage'
+import { SettingsPage } from './pages/SettingsPage/SettingsPage'
+import { SupportPage } from './pages/SupportPage/SupportPage'
+import { HelpPage } from './pages/HelpPage/HelpPage'
+import { StatisticsPage } from './pages/StatisticsPage/StatisticsPage'
+import { HistoryPage } from './pages/HistoryPage/HistoryPage'
+import { CategoriesPage } from './pages/CategoriesPage/CategoriesPage'
+import { Chart, registerables } from 'chart.js';
+
+
 
 function App() {
+  Chart.register(...registerables);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -39,20 +50,38 @@ function App() {
         {
           path: 'transactions',
           element: <TransactionsPage />,
+        },
+        {
+          path: 'budget',
+          element: <BudgetPage />,
+        },
+        {
+          path: 'settings',
+          element: <SettingsPage />,
+        },
+        {
+          path: 'support',
+          element: <SupportPage />,
+        },
+        {
+          path: 'help',
+          element: <HelpPage />,
+        },
+        {
+          path: 'statistics',
+          element: <StatisticsPage />
+        },
+        {
+          path: 'history',
+          element: <HistoryPage />
+        },
+        {
+          path:'categories', 
+          element:<CategoriesPage />
         }
+
       ],
     },
-
-    // {
-    //   path:'/',
-    //   element: <RequireSignIn><MainLayout /></RequireSignIn>,
-    //   children: [
-    //     {
-    //       path: "/",
-    //       element: <HomePage />,
-    //     },
-    //   ]
-    // },
   ]);
 
   useEffect(() => {

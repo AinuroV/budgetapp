@@ -12,17 +12,20 @@ export const Header = () => {
       <div className="container">
         <div className={styles.headerContent}>
           <Link to="/" className={styles.logo}>
-            <img src="/vite.svg" alt="BudgetApp" />
-            <span>BudgetApp</span>
+            <img src="/icon-logo.png" width={50} height={50} alt="Zi-BudgetApp" />
+            <span className='ps-2'>Zi-BudgetApp</span>
           </Link>
 
           <nav className={styles.nav}>
-            {!isPubRoute && isAuth ? (
+            {!isPubRoute || isAuth ? (
               <>
                 <Link to="/dashboard" className={styles.navLink}>Дашборд</Link>
                 <Link to="/transactions" className={styles.navLink}>Транзакции</Link>
                 <Link to="/budget" className={styles.navLink}>Бюджет</Link>
-                <Link to="/goals" className={styles.navLink}>Цели</Link>
+                <Link to="/statistics" className={styles.navLink}>Cтатистика</Link>
+                <Link to="/categories" className={styles.navLink}>Категории</Link>
+                <Link to="/history" className={styles.navLink}>История</Link>
+                <Link to="/settings" className={styles.navLink}>Настройки</Link>
                 <button onClick={logout} className={styles.logoutBtn}>Выйти</button>
               </>
             ) : (

@@ -20,10 +20,10 @@ export const HomePage = () => {
             <section className='py-5'>
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-6 d-flex flex-column justify-content-center">
                             <h1 className={styles.title}>Контроль финансов - это просто</h1>
                             <p className={styles.subtitle}>
-                                BudgetApp помогает управлять вашими финансами, планировать бюджет
+                                Zi-BudgetApp помогает управлять вашими финансами, планировать бюджет
                                 и достигать финансовых целей
                             </p>
                             <div className={styles.ctaButtons}>
@@ -32,12 +32,12 @@ export const HomePage = () => {
                                 </Link>
                             </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-6 d-flex justify-content-center">
                             <img
-                                width='200px'
-                                height='200px'
-                                src="/reg_img.png"
-                                alt="BudgetApp в действии"
+                                width='400px'
+                                height='400px'
+                                src="/budget.png"
+                                alt="Zi-BudgetApp в действии"
                                 className={styles.heroImage}
                             />
                         </div>
@@ -47,7 +47,7 @@ export const HomePage = () => {
 
             <section className='py-5'>
                 <div className="container">
-                    <h2 className={styles.sectionTitle}>Возможности BudgetApp</h2>
+                    <h2 className={styles.sectionTitle}>Возможности Zi-BudgetApp</h2>
                     <div className="row">
                         {features.map((feature, index) => (
                             <div className="col-md-4" key={index}>

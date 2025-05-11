@@ -25,7 +25,7 @@ export const RegisterPage = () => {
     <Container className={styles.authContainer}>
       <Card className={styles.authCard}>
         <Card.Body className={styles.authCardBody}>
-          <h2 className="text-center mb-4">Регистрация в BudgetApp</h2>
+          <h2 className="text-center mb-4">Регистрация</h2>
           
           {error && (
             <Alert variant="danger" className="mb-3">
