@@ -45,7 +45,7 @@ const getEntityTypeName = (type) => {
         'Transaction': 'Транзакция',
         'Category': 'Категория',
         'Budget': 'Бюджет',
-        'FinancialGoal': 'Цель'
+        'Goal': 'Цель'
     };
     return types[type] || type;
 };

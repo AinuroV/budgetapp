@@ -1,59 +1,55 @@
 const {Budget} = require('../models/models')
+const ApiError = require('../error/ApiError')
+const {validationResult} = require('express-validator')
 
-class BudgetController{
-
-    async get(req, res) {
+class BudgetController {
+    async get(req, res, next) {
         try {
-          
-          const budget = await Budget.findOne({
-            where: {userId: req.user.id} 
-          });
-          
-          if (!budget) {
-            
-            const defaultBudget = await Budget.create({
-              sum: 0,
-              userId: req.user.id
-            });
-            
+            const budget = await Budget.findOne({
+                where: {user_id: req.user.id},
+                attributes: ['amount', 'updated_at']
+            })
+
+            if (!budget) {
+                return next(ApiError.notFound('Бюджет не найден'))
+            }
+
             return res.json({
-              total: defaultBudget.sum,
-              categories: [
-                {name: 'Категория 1', percentage: 0, amount: 0},
-                {name: 'Категория 2', percentage: 0, amount: 0}
-              ]
-            });
-          }
-          
-         
-          res.json({
-            total: budget.sum})
-          
-        } catch (err) {
-          console.error('Ошибка при получении бюджета:', err);
-          res.status(500).json({message: 'Ошибка сервера'});
+                amount: budget.amount,
+                updated_at: budget.updatedAt
+            })
+        } catch (e) {
+            next(ApiError.internal(e.message))
         }
     }
 
-    async create(req, res){
+    async set(req, res, next) {
         try {
-            const {sum} = req.body
-            const userId = req.user.id 
-            console.log("----------------------------", userId)
-            if(!sum){
-                return res.status(400).json({ message: "Назначение бюджета обязательно" })
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return next(ApiError.badRequest('Ошибка валидации', errors.array()))
             }
-            const budget = await Budget.create({sum, userId})
-            return res.status(201).json({
-                message: "Бюджет создан",
-                budget
+
+            const {amount} = req.body
+            const userId = req.user.id
+
+            let budget = await Budget.findOne({where: {user_id: userId}})
+
+            if (budget) {
+                budget.amount = amount
+                await budget.save()
+            } else {
+                budget = await Budget.create({user_id: userId, amount})
+            }
+
+            return res.json({
+                amount: budget.amount,
+                updated_at: budget.updatedAt
             })
-            
-        } catch (error) {
-            console.log('Ошибка сохранения бюджета', error)
-            return res.status(400).json({message: "Ошибка при получения бюджета"})
+        } catch (e) {
+            next(ApiError.internal(e.message))
         }
     }
 }
 
-module.exports = new BudgetController
+module.exports = new BudgetController()

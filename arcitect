@@ -338,3 +338,353 @@ ui.store.js
         document.documentElement.setAttribute('data-theme', theme);
     }
     );
+
+
+
+API
+
+budgets
+    id (PK)
+    user_id (FK → users.id)
+    amount (DECIMAL)
+    created_at (TIMESTAMP)
+    updated_at (TIMESTAMP)
+
+    GET /api/budget
+    Ответ:
+    {
+        "amount": 50000.00,
+        "updated_at": "2023-11-20T12:00:00Z"
+    }
+
+    POST /api/budget
+    {
+        "amount": 55000.00
+    }
+    ответ:
+    {
+        "amount": 55000.00,
+        "updated_at": "2023-11-20T12:05:00Z"
+    }
+
+category_limits
+    id (PK)
+    user_id (FK → users.id)
+    category_id (FK → categories.id)
+    limit_amount (DECIMAL)
+    created_at (TIMESTAMP)
+    updated_at (TIMESTAMP)
+
+    GET /api/budget/limits
+    ответ:
+    {
+        "1": 15000.00,
+        "2": 10000.00
+    }
+
+    POST /api/budget/limits
+    {
+        "categoryId": 3,
+        "limit": 12000.00
+    }
+    ответ:
+    {
+        "categoryId": 3,
+        "limit": 12000.00,
+        "updated_at": "2023-11-20T12:10:00Z"
+    }
+
+categories
+    id (PK)
+    user_id (FK → users.id)
+    name (VARCHAR)
+    color (VARCHAR)
+    is_type_income (BOOLEAN)
+    created_at (TIMESTAMP)
+    updated_at (TIMESTAMP)
+
+    GET /api/categories
+    Ответ:
+    [
+        {
+            "id": 1,
+            "name": "Продукты",
+            "color": "#FF6900",
+            "is_type_income": false,
+            "created_at": "2023-11-20T12:00:00Z"
+        }
+    ]
+
+    POST /api/categories/add
+    {
+        "name": "Транспорт",
+        "color": "#0693E3",
+        "is_type_income": false
+    }
+    Ответ:
+    {
+        "id": 2,
+        "name": "Транспорт",
+        "color": "#0693E3",
+        "is_type_income": false,
+        "created_at": "2023-11-20T12:10:00Z"
+    }
+
+    POST /api/categories/update
+    {
+        "id": 2,
+        "name": "Общественный транспорт",
+        "color": "#0693E3"
+    }
+    Ответ:
+    {
+        "id": 2,
+        "name": "Общественный транспорт",
+        "color": "#0693E3",
+        "is_type_income": false,
+        "updated_at": "2023-11-20T12:15:00Z"
+    }
+
+    POST /api/categories/delete
+    {
+        "id": 2
+    }
+    Ответ:
+    {
+        "success": true,
+        "message": "Category deleted"
+    }
+
+goals
+    id (PK)
+    user_id (FK → users.id)
+    title (VARCHAR)
+    description (TEXT)
+    target_amount (DECIMAL)
+    current_amount (DECIMAL)
+    deadline (DATE)
+    completed (BOOLEAN)
+    created_at (TIMESTAMP)
+    updated_at (TIMESTAMP)
+
+    GET /api/goals
+    Ответ:
+    [
+        {
+            "id": 1,
+            "title": "Новый ноутбук",
+            "description": "MacBook Pro 16",
+            "target_amount": 250000,
+            "current_amount": 50000,
+            "deadline": "2024-12-31",
+            "completed": false,
+            "created_at": "2023-11-20T12:00:00Z"
+        }
+    ]
+
+    POST /api/goals/add
+    {
+        "title": "Путешествие",
+        "description": "Поездка в Японию",
+        "target_amount": 500000,
+        "deadline": "2024-06-01"
+    }
+    Ответ:
+    {
+        "id": 2,
+        "title": "Путешествие",
+        "description": "Поездка в Японию",
+        "target_amount": 500000,
+        "current_amount": 0,
+        "deadline": "2024-06-01",
+        "completed": false,
+        "created_at": "2023-11-20T12:10:00Z"
+    }
+
+    POST /api/goals/update
+    {
+        "id": 2,
+        "title": "Путешествие в Японию",
+        "target_amount": 600000
+    }
+    Ответ:
+    {
+        "id": 2,
+        "title": "Путешествие в Японию",
+        "target_amount": 600000,
+        "updated_at": "2023-11-20T12:15:00Z"
+    }
+
+    POST /api/goals/delete
+    {
+        "id": 2
+    }
+    Ответ:
+    {
+        "success": true,
+        "message": "Goal deleted"
+    }
+
+    POST /api/goals/add-money
+    {
+        "id": 1,
+        "amount": 25000
+    }
+    Ответ:
+    {
+        "id": 1,
+        "current_amount": 75000,
+        "updated_at": "2023-11-20T12:20:00Z"
+    }
+
+history_actions
+    id (PK)
+    user_id (FK → users.id)
+    action_type (ENUM: 'ADD', 'UPDATE', 'DELETE', 'UPDATE_BUDGET', 'SET_CATEGORY_LIMIT')
+    entity_type (ENUM: 'Transaction', 'Category', 'Budget', 'Goal')
+    entity_id (INTEGER)
+    old_data (JSONB)
+    new_data (JSONB)
+    timestamp (TIMESTAMP)
+
+    GET /api/history
+    Параметры:
+        actionType (опционально) - тип действия
+        entityType (опционально) - тип сущности
+        dateRange (обязательно) - период (day/week/month/year/all/custom)
+        startDate (опционально для custom) - начальная дата (ISO)
+        endDate (опционально для custom) - конечная дата (ISO)
+    Ответ:
+    [
+        {
+            "id": 1,
+            "action_type": "ADD",
+            "entity_type": "Transaction",
+            "entity_id": 101,
+            "old_data": null,
+            "new_data": {
+                "amount": 5000,
+                "description": "Продукты"
+            },
+            "timestamp": "2023-06-15T10:30:00Z"
+        }
+    ]
+
+    POST /api/history/add
+    {
+        "action_type": "UPDATE",
+        "entity_type": "Category",
+        "entity_id": 3,
+        "old_data": {
+            "name": "Еда",
+            "limit": 10000
+        },
+        "new_data": {
+            "name": "Продукты",
+            "limit": 15000
+        }
+    }
+    Ответ:
+    {
+        "id": 2,
+        "action_type": "UPDATE",
+        "entity_type": "Category",
+        "entity_id": 3,
+        "timestamp": "2023-06-14T15:45:00Z"
+    }
+
+    POST /api/history/undo
+    {
+        "id": 2
+    }
+    Ответ:
+    {
+        "success": true,
+        "message": "Action undone",
+        "restored_entity": {
+            "id": 3,
+            "name": "Еда",
+            "limit": 10000
+        }
+    }
+
+
+transactions
+    id (PK)
+    user_id (FK → users.id)
+    amount (DECIMAL)
+    description (TEXT)
+    date (DATE)
+    type (ENUM: 'income', 'expense')
+    category_id (FK → categories.id)
+    created_at (TIMESTAMP)
+    updated_at (TIMESTAMP)
+
+    GET /api/transactions
+    Параметры:
+        dateRange - период (week/month/year/all/custom)
+        startDate (опционально) - начальная дата (ISO)
+        endDate (опционально) - конечная дата (ISO)
+        category (опционально) - ID категории
+        type (опционально) - тип (income/expense)
+        search (опционально) - поиск по описанию
+        page (опционально) - номер страницы
+        limit (опционально) - элементов на странице
+    Ответ:
+    {
+        "transactions": [
+            {
+            "id": 1,
+            "amount": 5000,
+            "description": "Продукты",
+            "date": "2023-06-15",
+            "type": "expense",
+            "category_id": 3,
+            "created_at": "2023-06-15T10:30:00Z"
+            }
+        ],
+        "total": 1
+    }
+
+    POST /api/transactions/add
+    {
+        "amount": 25000,
+        "description": "Зарплата",
+        "date": "2023-06-20",
+        "type": "income",
+        "category_id": 5
+    }
+    Ответ:
+    {
+        "id": 2,
+        "amount": 25000,
+        "description": "Зарплата",
+        "date": "2023-06-20",
+        "type": "income",
+        "category_id": 5,
+        "created_at": "2023-06-20T09:15:00Z"
+    }
+
+    POST /api/transactions/update
+    {
+        "id": 1,
+        "amount": 5500,
+        "description": "Продукты (супермаркет)"
+    }
+    Ответ:
+    {
+        "id": 1,
+        "amount": 5500,
+        "description": "Продукты (супермаркет)",
+        "updated_at": "2023-06-15T11:45:00Z"
+    }
+
+    POST /api/transactions/delete
+    {
+        "id": 1
+    }
+    Ответ:
+    {
+        "success": true,
+        "message": "Transaction deleted"
+    }

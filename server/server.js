@@ -11,8 +11,8 @@ const corsOptions = {
     origin: 'http://localhost:5173', // Точный адрес вашего фронтенда
     credentials: true,
     optionsSuccessStatus: 200
-  };
-  app.use(cors(corsOptions));
+};
+app.use(cors(corsOptions));
 
 app.use(express.json())
 
@@ -20,16 +20,16 @@ app.use('/api', router)
 
 
 
-const start = async() => {
+const start = async () => {
     try {
         await sequelize.authenticate()
         await sequelize.sync()
         app.listen(PORT, () => {
-              console.log(`\nserver started on ${PORT} port`)})
+            console.log(`\nserver started on ${PORT} port`)
+        })
     } catch (error) {
         console.log(error)
     }
-    
 }
 
 start()

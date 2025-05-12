@@ -1,7 +1,7 @@
 const {DataTypes} = require('sequelize')
 const sequelize = require('../db')
 
-const Category = sequelize.define('category', {
+const CategoryLimit = sequelize.define('category_limit', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -11,19 +11,13 @@ const Category = sequelize.define('category', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    name: {
-        type: DataTypes.STRING,
+    category_id: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
-    color: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: '#FFFFFF'
-    },
-    is_type_income: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+    limit_amount: {
+        type: DataTypes.DECIMAL(12, 2),
+        allowNull: false
     },
     createdAt: {
         type: DataTypes.DATE,
@@ -34,9 +28,9 @@ const Category = sequelize.define('category', {
         field: 'updated_at'
     }
 }, {
-    tableName: 'categories',
+    tableName: 'category_limits',
     timestamps: true,
     underscored: true
 })
 
-module.exports = Category
+module.exports = CategoryLimit

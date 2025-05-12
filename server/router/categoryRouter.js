@@ -1,13 +1,18 @@
 const express = require('express')
 const router = express.Router()
-const CategoryController = require('../controllers/CategoryControllers')
+const categoryController = require('../controllers/categoryController')
 const authMiddleware = require('../middleware/authMiddleware')
-router.post('/',authMiddleware , CategoryController.create)
-router.get('/',authMiddleware , CategoryController.getAll)
-router.put('/:id',authMiddleware , CategoryController.update)
-router.delete('/:id',authMiddleware , CategoryController.delete)
-router.get('/:id',authMiddleware , CategoryController.getOne)
-router.get('/type/:isTypeIncome', authMiddleware, CategoryController.getAllByType)
-module.exports = router
 
-//expense
+// GET /api/categories - Получение всех категорий пользователя
+router.get('/categories', authMiddleware, categoryController.getAll)
+
+// POST /api/categories/add - Создание новой категории
+router.post('/categories/add',authMiddleware,categoryController.create)
+
+// POST /api/categories/update - Обновление категории
+router.post('/categories/update',authMiddleware,categoryController.update)
+
+// POST /api/categories/delete - Удаление категории
+router.post('/categories/delete',authMiddleware,categoryController.delete)
+
+module.exports = router

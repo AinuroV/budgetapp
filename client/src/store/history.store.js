@@ -158,7 +158,7 @@ export const useHistoryStore = create((set, get) => ({
           TRANSACTION: 'Transaction',
           CATEGORY: 'Category',
           BUDGET: 'Budget',
-          GOAL: 'FinancialGoal'
+          GOAL: 'Goal'
         };
         return a.entityType === entityMap[filters.entityType];
       });

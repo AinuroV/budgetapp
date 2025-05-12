@@ -1,15 +1,20 @@
 const express = require('express')
 const router = express.Router()
 const authRouter = require('./authRouter')
-const categoryRouter = require('./categoryRouter')
-const transactionRouter = require('./transactionRouter')
 const authMiddleware = require('../middleware/authMiddleware')
 const budgetRouter = require('./budgetRouter')
-const goalsRoutes = require('./financialGoalRouter');
+const categoryLimitRouter = require('./categoryLimitRouter')
+const categoryRouter = require('./categoryRouter')
+const goalRouter = require('./goalRouter')
+const historyRouter = require('./historyRouter')
+const transactionRouter = require('./transactionRouter')
 
-router.use('/api', goalsRoutes);
-router.use('/category',authMiddleware, categoryRouter)
-router.use('/transaction', authMiddleware, transactionRouter )
 router.use('/auth', authRouter)
 router.use('/budget', budgetRouter)
+router.use('/budget', categoryLimitRouter)
+router.use('/category',authMiddleware, categoryRouter)
+router.use('/goals', goalRouter)
+router.use('/history', historyRouter)
+router.use('/transaction', authMiddleware, transactionRouter )
+
 module.exports = router

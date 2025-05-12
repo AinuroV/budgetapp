@@ -3,21 +3,21 @@ const Category = require('./categoryModels.js')
 const Transaction = require('./transactionModels')
 const Token = require('./tokenModels')
 const Budget = require('./budgetModels.js')
-const FinancialGoal = require('./financialGoal')
+const Goal = require('./goalModel.js')
 
 User.hasMany(Category) // Один пользователь имеет много категорий
 Category.belongsTo(User) // Одна категория имеет одного пользователя
 
-User.hasMany(Token) 
+User.hasMany(Token)
 Token.belongsTo(User)
 
-User.hasOne(Budget) 
+User.hasOne(Budget)
 Budget.belongsTo(User)
 
-FinancialGoal.associate = (models) => {
-    FinancialGoal.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE' });
-    
-  };
+Goal.associate = (models) => {
+  Goal.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE' });
+
+};
 User.hasMany(Transaction)
 Transaction.belongsTo(User)
 
@@ -26,10 +26,10 @@ Transaction.belongsTo(Category)
 
 
 module.exports = {
-    Category,
-    Transaction,
-    User,
-    Token, 
-    Budget,
-    FinancialGoal
+  Category,
+  Transaction,
+  User,
+  Token,
+  Budget,
+  Goal
 }

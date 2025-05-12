@@ -1,7 +1,7 @@
 const {DataTypes} = require('sequelize')
 const sequelize = require('../db')
 
-const Category = sequelize.define('category', {
+const Goal = sequelize.define('goal', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -11,16 +11,28 @@ const Category = sequelize.define('category', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    name: {
+    title: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    color: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: '#FFFFFF'
+    description: {
+        type: DataTypes.TEXT,
+        allowNull: true
     },
-    is_type_income: {
+    target_amount: {
+        type: DataTypes.DECIMAL(12, 2),
+        allowNull: false
+    },
+    current_amount: {
+        type: DataTypes.DECIMAL(12, 2),
+        allowNull: false,
+        defaultValue: 0
+    },
+    deadline: {
+        type: DataTypes.DATEONLY,
+        allowNull: false
+    },
+    completed: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
@@ -34,9 +46,9 @@ const Category = sequelize.define('category', {
         field: 'updated_at'
     }
 }, {
-    tableName: 'categories',
+    tableName: 'goals',
     timestamps: true,
     underscored: true
 })
 
-module.exports = Category
+module.exports = Goal

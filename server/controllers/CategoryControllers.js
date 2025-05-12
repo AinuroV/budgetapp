@@ -1,151 +1,105 @@
-const { Category } = require('../models/models')
+const {Category} = require('../models/models')
+const ApiError = require('../error/ApiError')
+const {validationResult} = require('express-validator')
 
 class CategoryController {
-    async create(req, res) {
+    async getAll(req, res, next) {
         try {
-            const { name, isTypeIncome, limit } = req.body
-            const userId = req.user.id 
+            const categories = await Category.findAll({
+                where: {user_id: req.user.id},
+                attributes: ['id', 'name', 'color', 'is_type_income', 'created_at']
+            })
+            return res.json(categories)
+        } catch (e) {
+            next(ApiError.internal(e.message))
+        }
+    }
 
-            if (!name) {
-                return res.status(400).json({ message: "Название категории обязательно" })
+    async create(req, res, next) {
+        try {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return next(ApiError.badRequest('Ошибка валидации', errors.array()))
             }
 
-            const category = await Category.create({ name, userId,isTypeIncome, limit })
-            return res.status(201).json({
-                message: "Категория расходов создана",
-                category
+            const {name, color, is_type_income} = req.body
+            const category = await Category.create({
+                user_id: req.user.id,
+                name,
+                color,
+                is_type_income
             })
 
-        } catch (error) {
-            console.error('Ошибка при создании категории:', error)
-            return res.status(500).json({ 
-                message: "Ошибка при создании категории",
-                error: error.message 
+            return res.json({
+                id: category.id,
+                name: category.name,
+                color: category.color,
+                is_type_income: category.is_type_income,
+                created_at: category.createdAt
             })
+        } catch (e) {
+            next(ApiError.internal(e.message))
         }
     }
 
-    async getAll(req, res) {
+    async update(req, res, next) {
         try {
-            const userId = req.user.id
-            const categories = await Category.findAll({ where: { userId } })
-            
-            return res.json({categories})
-        } catch (error) {
-            console.error('Ошибка при получении категорий:', error)
-            return res.status(500).json({
-                 message: "Ошибка при получении категорий",
-                error: error.message })
-        }
-    }
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return next(ApiError.badRequest('Ошибка валидации', errors.array()))
+            }
 
-    async getAllByType(req, res) {
-        try {
-            const { isTypeIncome } = req.params
-            const userId = req.user.id
-            const categories = await Category.findAll({ where: { userId,isTypeIncome } })
-            
-            return res.json({categories})
-        } catch (error) {
-            console.error('Ошибка при получении категорий:', error)
-            return res.status(500).json({
-                 message: "Ошибка при получении категорий",
-                error: error.message })
-        }
-    }
-
-    async getOne(req, res) {
-        try {
-            const { id } = req.params
-            const userId = req.user.id
-
-            const category = await Category.findOne({ 
-                where: { id, userId },
-               
+            const {id, name, color} = req.body
+            const category = await Category.findOne({
+                where: {
+                    id,
+                    user_id: req.user.id
+                }
             })
 
             if (!category) {
-                return res.status(404).json({ 
-                    message: `Категория расходов с ID ${id} не найдена`
-                })
+                return next(ApiError.notFound('Категория не найдена'))
             }
 
-            return res.json(category)
-        } catch (error) {
-            console.error('Ошибка при получении категории:', error)
-            return res.status(500).json({ 
-                message: "Ошибка при получении категории расходов",
-                error: error.message
-            })
-        }
-    }
-
-    async update(req, res) {
-        try {
-            const { id } = req.params
-            const { name } = req.body
-            const userId = req.user.id
-
-            if (!name) {
-                return res.status(400).json({ message: "Название категории обязательно" })
-            }
-
-            const category = await Category.findOne({ 
-                where: { id, userId }
-            })
-
-            if (!category) {
-                return res.status(404).json({ 
-                    message: `Категория расходов с ID ${id} не найдена`
-                })
-            }
-
-            category.name = name
+            category.name = name || category.name
+            category.color = color || category.color
             await category.save()
 
             return res.json({
-                message: "Категория расходов обновлена",
-                category
+                id: category.id,
+                name: category.name,
+                color: category.color,
+                is_type_income: category.is_type_income,
+                updated_at: category.updatedAt
             })
-        } catch (error) {
-            console.error('Ошибка при обновлении категории:', error)
-            return res.status(500).json({ 
-                message: "Ошибка при обновлении категории расходов",
-                error: error.message
-            })
+        } catch (e) {
+            next(ApiError.internal(e.message))
         }
     }
 
-    async delete(req, res) {
+    async delete(req, res, next) {
         try {
-            const { id } = req.params
-            const userId = req.user.id
-
-            const category = await Category.findOne({ 
-                where: { id, userId }
+            const {id} = req.body
+            const category = await Category.findOne({
+                where: {
+                    id,
+                    user_id: req.user.id
+                }
             })
 
             if (!category) {
-                return res.status(404).json({ 
-                    message: `Категория расходов с ID ${id} не найдена`
-                })
+                return next(ApiError.notFound('Категория не найдена'))
             }
 
             await category.destroy()
-            return res.json({ 
-                message: "Категория расходов успешно удалена",
-                deletedId: id
+            return res.json({
+                success: true,
+                message: 'Category deleted'
             })
-        } catch (error) {
-            console.error('Ошибка при удалении категории:', error)
-            return res.status(500).json({ 
-                message: "Ошибка при удалении категории расходов",
-                error: error.message
-            })
+        } catch (e) {
+            next(ApiError.internal(e.message))
         }
     }
-
-    
 }
 
 module.exports = new CategoryController()
