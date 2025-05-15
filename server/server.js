@@ -8,7 +8,7 @@ const cors = require('cors');
 const PORT = process.env.PORT || 4444
 const app = express()
 const corsOptions = {
-    origin: 'http://localhost:5173', // Точный адрес вашего фронтенда
+    // origin: 'http://localhost:5173', // Точный адрес вашего фронтенда
     credentials: true,
     optionsSuccessStatus: 200
 };

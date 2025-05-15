@@ -1,0 +1,127 @@
+POST http://localhost:4444/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "test@mail.ru",
+    "password": "12345678"
+}
+
+
+
+// Budget
+GET http://localhost:4444/api/budget
+Content-Type: application/json
+Authorization: Bearer <ваш_токен>
+
+POST http://localhost:4444/api/budget
+Content-Type: application/json
+Authorization: Bearer <ваш_токен>
+{ "amount": 55000.00 }
+
+
+
+// categoryLimit
+GET http://localhost:4444/api/budget/limits
+Authorization: Bearer <ваш_токен>
+
+POST http://localhost:4444/api/budget/limits
+Authorization: Bearer <ваш_токен>
+{ "categoryId": 3, "limit": 12000.00 }
+
+
+
+// category
+GET http://localhost:4444/api/categories
+Authorization: Bearer <ваш_токен>
+
+POST http://localhost:4444/api/categories/add
+Authorization: Bearer <ваш_токен>
+{"name": "Транспорт", "color": "#0693E3", "is_type_income": false}
+
+POST http://localhost:4444/api/categories/update
+Authorization: Bearer <ваш_токен>
+{"id": 1, "name": "Общественный транспорт", "color": "#0693E3"}
+
+POST http://localhost:4444/api/categories/delete
+Authorization: Bearer <ваш_токен>
+{"id": 2}
+
+
+
+//goal
+GET http://localhost:4444/api/goals
+Authorization: Bearer <ваш_токен>
+
+POST http://localhost:4444/api/goals/add
+Authorization: Bearer <ваш_токен>
+{"title": "Путешествие", "description": "Поездка в Японию", "target_amount": 500000, "deadline": "2024-06-01"}
+
+POST http://localhost:4444/api/goals/update
+Authorization: Bearer <ваш_токен>
+{"id": 2, "title": "Путешествие в Японию", "target_amount": 600000}
+
+POST http://localhost:4444/api/goals/delete:
+Authorization: Bearer <ваш_токен>
+{"id": 2}
+
+POST http://localhost:4444/api/goals/add-money
+Authorization: Bearer <ваш_токен>
+{"id": 1, "amount": 25000}
+
+
+
+//history &actionType=UPDATE&entityType=Category
+GET http://localhost:4444/api/history?dateRange=month
+Authorization: Bearer <ваш_токен>
+
+POST http://localhost:4444/api/history/add
+Authorization: Bearer <ваш_токен>
+{
+    "action_type": "UPDATE",
+    "entity_type": "Category",
+    "entity_id": 3,
+    "old_data": {
+        "name": "Еда",
+        "limit": 10000
+    },
+    "new_data": {
+        "name": "Продукты",
+        "limit": 15000
+    }
+}
+
+POST http://localhost:4444/api/history/undo
+Authorization: Bearer <ваш_токен>
+{
+    "id": 2
+}
+
+
+
+//Transaction 
+GET http://localhost:4444/api/transactions?dateRange=month&page=1&limit=10
+Authorization: Bearer <ваш_токен>
+
+POST http://localhost:4444/api/transactions/add
+Authorization: Bearer <ваш_токен>
+{
+    "amount": 25000,
+    "description": "Зарплата",
+    "date": "2023-06-20",
+    "type": "income",
+    "category_id": 5
+}
+
+POST http://localhost:4444/api/transactions/update
+Authorization: Bearer <ваш_токен>
+{
+    "id": 1,
+    "amount": 5500,
+    "description": "Продукты (супермаркет)"
+}
+
+POST http://localhost:4444/api/transactions/delete
+Authorization: Bearer <ваш_токен>
+{
+    "id": 1
+}

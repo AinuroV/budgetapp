@@ -23,10 +23,10 @@ export const useBudgetStore = create((set, get) => ({
     try {
       // Загружаем общий бюджет
       const [budgetRes, limitsRes] = await Promise.all([
-        fetch('http://localhost:3000/api/budget', {
+        fetch('http://localhost:4444/api/budget', {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        fetch('http://localhost:3000/api/budget/limits', {
+        fetch('http://localhost:4444/api/budget/limits', {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
@@ -69,8 +69,8 @@ export const useBudgetStore = create((set, get) => ({
 
     set({ isLoading: true, error: null });
     try {
-      const response = await fetch('http://localhost:3000/api/budget', {
-        method: 'PUT',
+      const response = await fetch('http://localhost:4444/api/budget', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`

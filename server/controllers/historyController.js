@@ -5,10 +5,10 @@ const { Op } = require('sequelize')
 const moment = require('moment')
 
 // Импортируем модели для отмены действий
-const { Transaction } = require('../models/transactionModel')
-const { Category } = require('../models/categoryModel')
-const { Budget } = require('../models/budgetModel')
-const { Goal } = require('../models/goalModel')
+const Transaction = require('../models/transactionModel')
+const Category = require('../models/categoryModels')
+const Budget = require('../models/budgetModels')
+const Goal = require('../models/goalModel')
 
 class HistoryController {
     async getAll(req, res, next) {

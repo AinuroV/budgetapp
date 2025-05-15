@@ -11,9 +11,9 @@ const transactionRouter = require('./transactionRouter')
 router.use('/auth', authRouter)
 router.use('/budget', budgetRouter)
 router.use('/budget', categoryLimitRouter)
-router.use('/category', categoryRouter)
+router.use('/categories', categoryRouter)
 router.use('/goals', goalRouter)
 router.use('/history', historyRouter)
-router.use('/transaction', transactionRouter)
+router.use('/transactions', transactionRouter)
 
 module.exports = router
