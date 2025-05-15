@@ -12,8 +12,8 @@ import {
     Col,
     InputGroup
 } from 'react-bootstrap';
-// import useHistoryStore from '../../store/history.store';
-// import useAuthStore from '../../store/auth.store';
+import {useHistoryStore} from '../../store/history.store';
+import {useAuthStore} from '../../store/auth.store';
 
 // Вспомогательная функция для форматирования даты
 const formatDateTime = (dateString) => {
@@ -50,97 +50,97 @@ const getEntityTypeName = (type) => {
     return types[type] || type;
 };
 // Моковые данные истории
-const mockHistory = [
-    {
-        id: 1,
-        type: 'ADD',
-        entityType: 'Transaction',
-        entityId: 101,
-        timestamp: '2023-06-15T10:30:00Z',
-        userId: 1,
-        data: {
-            amount: 5000,
-            description: 'Продукты',
-            categoryId: 3
-        }
-    },
-    {
-        id: 2,
-        type: 'UPDATE',
-        entityType: 'Category',
-        entityId: 3,
-        timestamp: '2023-06-14T15:45:00Z',
-        userId: 1,
-        oldData: { name: 'Еда', limit: 10000 },
-        newData: { name: 'Продукты', limit: 15000 }
-    },
-    {
-        id: 3,
-        type: 'UPDATE_BUDGET',
-        entityType: 'Budget',
-        timestamp: '2023-06-10T09:20:00Z',
-        userId: 1,
-        oldData: { amount: 40000 },
-        newData: { amount: 50000 }
-    },
-    {
-        id: 4,
-        type: 'DELETE',
-        entityType: 'Transaction',
-        entityId: 100,
-        timestamp: '2023-06-05T14:10:00Z',
-        userId: 1,
-        data: {
-            amount: 2000,
-            description: 'Кафе',
-            categoryId: 6
-        }
-    },
-    {
-        id: 5,
-        type: 'SET_CATEGORY_LIMIT',
-        entityType: 'Budget',
-        timestamp: '2023-06-01T11:00:00Z',
-        userId: 1,
-        entityId: 3,
-        oldData: 10000,
-        newData: 15000
-    }
-];
+// const mockHistory = [
+//     {
+//         id: 1,
+//         type: 'ADD',
+//         entityType: 'Transaction',
+//         entityId: 101,
+//         timestamp: '2023-06-15T10:30:00Z',
+//         userId: 1,
+//         data: {
+//             amount: 5000,
+//             description: 'Продукты',
+//             categoryId: 3
+//         }
+//     },
+//     {
+//         id: 2,
+//         type: 'UPDATE',
+//         entityType: 'Category',
+//         entityId: 3,
+//         timestamp: '2023-06-14T15:45:00Z',
+//         userId: 1,
+//         oldData: { name: 'Еда', limit: 10000 },
+//         newData: { name: 'Продукты', limit: 15000 }
+//     },
+//     {
+//         id: 3,
+//         type: 'UPDATE_BUDGET',
+//         entityType: 'Budget',
+//         timestamp: '2023-06-10T09:20:00Z',
+//         userId: 1,
+//         oldData: { amount: 40000 },
+//         newData: { amount: 50000 }
+//     },
+//     {
+//         id: 4,
+//         type: 'DELETE',
+//         entityType: 'Transaction',
+//         entityId: 100,
+//         timestamp: '2023-06-05T14:10:00Z',
+//         userId: 1,
+//         data: {
+//             amount: 2000,
+//             description: 'Кафе',
+//             categoryId: 6
+//         }
+//     },
+//     {
+//         id: 5,
+//         type: 'SET_CATEGORY_LIMIT',
+//         entityType: 'Budget',
+//         timestamp: '2023-06-01T11:00:00Z',
+//         userId: 1,
+//         entityId: 3,
+//         oldData: 10000,
+//         newData: 15000
+//     }
+// ];
 
-// Мок для useHistoryStore
-const mockHistoryStore = {
-    history: mockHistory,
-    filteredHistory: mockHistory,
-    isLoading: false,
-    error: null,
-    filters: {
-        dateRange: 'month',
-        actionType: null,
-        entityType: null,
-        startDate: null,
-        endDate: null
-    },
-    fetchHistory: () => console.log('Fetching history...'),
-    undoAction: (id) => {
-        console.log(`Undoing action ${id}`);
-        return Promise.resolve(true);
-    },
-    setFilter: (name, value) => {
-        console.log(`Setting filter ${name} to ${value}`);
-    },
-    applyFilters: () => console.log('Applying filters...')
-};
+// // Мок для useHistoryStore
+// const mockHistoryStore = {
+//     history: mockHistory,
+//     filteredHistory: mockHistory,
+//     isLoading: false,
+//     error: null,
+//     filters: {
+//         dateRange: 'month',
+//         actionType: null,
+//         entityType: null,
+//         startDate: null,
+//         endDate: null
+//     },
+//     fetchHistory: () => console.log('Fetching history...'),
+//     undoAction: (id) => {
+//         console.log(`Undoing action ${id}`);
+//         return Promise.resolve(true);
+//     },
+//     setFilter: (name, value) => {
+//         console.log(`Setting filter ${name} to ${value}`);
+//     },
+//     applyFilters: () => console.log('Applying filters...')
+// };
 
-// Мок для useAuthStore
-const mockAuthStore = {
-    user: { id: 1, name: 'Тестовый пользователь' }
-};
+// // Мок для useAuthStore
+// const mockAuthStore = {
+//     user: { id: 1, name: 'Тестовый пользователь' }
+// };
 
 export function HistoryPage() {
     // Временная замена для тестирования
-    const useHistoryStore = () => mockHistoryStore;
-    const useAuthStore = () => mockAuthStore;
+    // const useHistoryStore = () => mockHistoryStore;
+    // const useAuthStore = () => mockAuthStore;
 
 
     const {

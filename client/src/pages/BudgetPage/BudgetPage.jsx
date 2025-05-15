@@ -13,79 +13,79 @@ import {
     InputGroup
 } from 'react-bootstrap';
 import { useBudgetStore } from '../../store/budget.store';
-// import { useCategoriesStore } from '../../store/categories.store';
-// import { useUIStore } from '../../store/ui.store';
+import { useCategoriesStore } from '../../store/categories.store';
+import { useUIStore } from '../../store/ui.store';
 
 
 // Моковые данные категорий
-const mockCategories = [
-  { id: 1, name: 'Еда', color: '#4e79a7', icon: '🍔', type: 'expense' },
-  { id: 2, name: 'Транспорт', color: '#f28e2b', icon: '🚗', type: 'expense' },
-  { id: 3, name: 'Жилье', color: '#e15759', icon: '🏠', type: 'expense' },
-  { id: 4, name: 'Развлечения', color: '#76b7b2', icon: '🎬', type: 'expense' },
-];
+// const mockCategories = [
+//   { id: 1, name: 'Еда', color: '#4e79a7', icon: '🍔', type: 'expense' },
+//   { id: 2, name: 'Транспорт', color: '#f28e2b', icon: '🚗', type: 'expense' },
+//   { id: 3, name: 'Жилье', color: '#e15759', icon: '🏠', type: 'expense' },
+//   { id: 4, name: 'Развлечения', color: '#76b7b2', icon: '🎬', type: 'expense' },
+// ];
 
 // Моковые данные бюджета
-const mockBudgetData = {
-  monthlyBudget: { amount: 50000 },
-  categoryLimits: {
-    1: 15000, // Лимит на еду
-    2: 8000,  // Лимит на транспорт
-    3: 20000  // Лимит на жилье
-  },
-  spendingByCategory: {
-    1: 13250, // Потрачено на еду
-    2: 8500,  // Потрачено на транспорт (превышение)
-    3: 18500  // Потрачено на жилье
-  },
-  exceededLimits: [2], // Превышен только транспорт
-  isLoading: false,
-  error: null
-};
+// const mockBudgetData = {
+//   monthlyBudget: { amount: 50000 },
+//   categoryLimits: {
+//     1: 15000, // Лимит на еду
+//     2: 8000,  // Лимит на транспорт
+//     3: 20000  // Лимит на жилье
+//   },
+//   spendingByCategory: {
+//     1: 13250, // Потрачено на еду
+//     2: 8500,  // Потрачено на транспорт (превышение)
+//     3: 18500  // Потрачено на жилье
+//   },
+//   exceededLimits: [2], // Превышен только транспорт
+//   isLoading: false,
+//   error: null
+// };
 
 // Моковые методы хранилища
-const mockBudgetStore = {
-  ...useBudgetStore.getState(),
-  ...mockBudgetData,
-  fetchBudgetData: async () => {
-    console.log('Fetching budget data...');
-  },
-  setMonthlyBudget: async (amount) => {
-    console.log(`Setting monthly budget to ${amount}`);
-    return true;
-  },
-  setCategoryLimit: async (categoryId, limit) => {
-    console.log(`Setting limit for category ${categoryId} to ${limit}`);
-    return true;
-  },
-  getAvailableBudget: () => {
-    const totalSpent = Object.values(mockBudgetData.spendingByCategory)
-      .reduce((sum, spent) => sum + spent, 0);
-    return mockBudgetData.monthlyBudget.amount - totalSpent;
-  },
-  getCategoryProgress: (categoryId) => {
-    const limit = mockBudgetData.categoryLimits[categoryId] || 0;
-    const spent = mockBudgetData.spendingByCategory[categoryId] || 0;
-    return limit > 0 ? Math.min(100, (spent / limit) * 100) : 0;
-  }
-};
+// const mockBudgetStore = {
+//   ...useBudgetStore.getState(),
+//   ...mockBudgetData,
+//   fetchBudgetData: async () => {
+//     console.log('Fetching budget data...');
+//   },
+//   setMonthlyBudget: async (amount) => {
+//     console.log(`Setting monthly budget to ${amount}`);
+//     return true;
+//   },
+//   setCategoryLimit: async (categoryId, limit) => {
+//     console.log(`Setting limit for category ${categoryId} to ${limit}`);
+//     return true;
+//   },
+//   getAvailableBudget: () => {
+//     const totalSpent = Object.values(mockBudgetData.spendingByCategory)
+//       .reduce((sum, spent) => sum + spent, 0);
+//     return mockBudgetData.monthlyBudget.amount - totalSpent;
+//   },
+//   getCategoryProgress: (categoryId) => {
+//     const limit = mockBudgetData.categoryLimits[categoryId] || 0;
+//     const spent = mockBudgetData.spendingByCategory[categoryId] || 0;
+//     return limit > 0 ? Math.min(100, (spent / limit) * 100) : 0;
+//   }
+// };
 
 // Мок для useCategoriesStore
-const mockCategoriesStore = {
-  expenseCategories: mockCategories,
-  getCategoryById: (id) => mockCategories.find(c => c.id === id)
-};
+// const mockCategoriesStore = {
+//   expenseCategories: mockCategories,
+//   getCategoryById: (id) => mockCategories.find(c => c.id === id)
+// };
 
 // Мок для useUIStore
-const mockUIStore = {
-  addToast: (toast) => console.log('Toast:', toast)
-};
+// const mockUIStore = {
+//   addToast: (toast) => console.log('Toast:', toast)
+// };
 
 export function BudgetPage() {
 
-    const useBudgetStore = () => mockBudgetStore;
-    const useCategoriesStore = () => mockCategoriesStore;
-    const useUIStore = () => mockUIStore;
+    // const useBudgetStore = () => mockBudgetStore;
+    // const useCategoriesStore = () => mockCategoriesStore;
+    // const useUIStore = () => mockUIStore;
 
     const {
         monthlyBudget,

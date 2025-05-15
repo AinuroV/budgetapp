@@ -5,32 +5,32 @@ import { useTransactionsStore } from '../../store/transactions.store';
 import { useUIStore } from '../../store/ui.store';
 import { TransactionModal } from '../../components/Modals/TransactionModal';
 
-const mockCategories = [
-  { id: 1, name: 'Еда', color: '#4e79a7', icon: '🍔' },
-  { id: 2, name: 'Транспорт', color: '#f28e2b', icon: '🚕' },
-  { id: 3, name: 'Жилье', color: '#e15759', icon: '🏠' },
-  { id: 4, name: 'Развлечения', color: '#76b7b2', icon: '🎬' },
-  { id: 5, name: 'Здоровье', color: '#59a14f', icon: '🏥' }
-];
+// const mockCategories = [
+//   { id: 1, name: 'Еда', color: '#4e79a7', icon: '🍔' },
+//   { id: 2, name: 'Транспорт', color: '#f28e2b', icon: '🚕' },
+//   { id: 3, name: 'Жилье', color: '#e15759', icon: '🏠' },
+//   { id: 4, name: 'Развлечения', color: '#76b7b2', icon: '🎬' },
+//   { id: 5, name: 'Здоровье', color: '#59a14f', icon: '🏥' }
+// ];
 
-const mockTransactions = [
-  { id: 1, type: 'expense', categoryId: 1, amount: 3500, date: '2023-06-15', description: 'Продукты' },
-  { id: 2, type: 'expense', categoryId: 2, amount: 1200, date: '2023-06-16', description: 'Такси' },
-  { id: 3, type: 'income', categoryId: null, amount: 50000, date: '2023-06-17', description: 'Зарплата' },
-  { id: 4, type: 'expense', categoryId: 3, amount: 25000, date: '2023-06-01', description: 'Аренда' },
-  { id: 5, type: 'expense', categoryId: 4, amount: 1500, date: '2023-06-18', description: 'Кино' },
-  { id: 6, type: 'expense', categoryId: 5, amount: 3000, date: '2023-06-10', description: 'Аптека' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' }
-];
+// const mockTransactions = [
+//   { id: 1, type: 'expense', categoryId: 1, amount: 3500, date: '2023-06-15', description: 'Продукты' },
+//   { id: 2, type: 'expense', categoryId: 2, amount: 1200, date: '2023-06-16', description: 'Такси' },
+//   { id: 3, type: 'income', categoryId: null, amount: 50000, date: '2023-06-17', description: 'Зарплата' },
+//   { id: 4, type: 'expense', categoryId: 3, amount: 25000, date: '2023-06-01', description: 'Аренда' },
+//   { id: 5, type: 'expense', categoryId: 4, amount: 1500, date: '2023-06-18', description: 'Кино' },
+//   { id: 6, type: 'expense', categoryId: 5, amount: 3000, date: '2023-06-10', description: 'Аптека' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' }
+// ];
 
 
 export function RecentTransactions() {
@@ -39,12 +39,12 @@ export function RecentTransactions() {
     filteredTransactions
   } = useTransactionsStore();
 
-  // const { getCategoryById } = useCategoriesStore();
+  const { getCategoryById } = useCategoriesStore();
   const { openModal } = useUIStore();
 
-  const getCategoryById = (id) => {
-    return mockCategories.find(cat => cat.id === id);
-  };
+  // const getCategoryById = (id) => {
+  //   return mockCategories.find(cat => cat.id === id);
+  // };
 
   const formatDate = (dateString) => {
     const options = { day: 'numeric', month: 'short', year: 'numeric' };
@@ -54,8 +54,8 @@ export function RecentTransactions() {
   // Используем фильтрованные транзакции если они есть, иначе все
   const displayTransactions = filteredTransactions.length > 0
     ? filteredTransactions
-    // : transactions;
-    : mockTransactions.slice(0, 5)
+    : transactions;
+    // : mockTransactions.slice(0, 5)
 
   const recentTransactions = displayTransactions.slice(0, 5);
 

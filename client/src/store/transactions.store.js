@@ -12,7 +12,7 @@ export const useTransactionsStore = create((set, get) => ({
 
     // Фильтры и пагинация
     filters: {
-        dateRange: 'month', // week/month/year/custom
+        dateRange: 'all', // week/month/year/custom
         startDate: null,
         endDate: null,
         category: null,

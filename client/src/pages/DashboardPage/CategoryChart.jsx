@@ -3,27 +3,27 @@ import { useEffect, useRef, useState } from 'react';
 import {useCategoriesStore} from '../../store/categories.store';
 import {useTransactionsStore} from '../../store/transactions.store';
 
-const expenseCategories = [
-  { id: 1, name: 'Еда', color: '#4e79a7', icon: '🍔' },
-  { id: 2, name: 'Транспорт', color: '#f28e2b', icon: '🚕' },
-  { id: 3, name: 'Жилье', color: '#e15759', icon: '🏠' },
-  { id: 4, name: 'Развлечения', color: '#76b7b2', icon: '🎬' },
-  { id: 5, name: 'Здоровье', color: '#59a14f', icon: '🏥' }
-];
+// const expenseCategories = [
+//   { id: 1, name: 'Еда', color: '#4e79a7', icon: '🍔' },
+//   { id: 2, name: 'Транспорт', color: '#f28e2b', icon: '🚕' },
+//   { id: 3, name: 'Жилье', color: '#e15759', icon: '🏠' },
+//   { id: 4, name: 'Развлечения', color: '#76b7b2', icon: '🎬' },
+//   { id: 5, name: 'Здоровье', color: '#59a14f', icon: '🏥' }
+// ];
 
-const transactions = [
-  { id: 1, type: 'expense', categoryId: 1, amount: 3500, date: '2023-06-15', description: 'Продукты' },
-  { id: 2, type: 'expense', categoryId: 2, amount: 1200, date: '2023-06-16', description: 'Такси' },
-  { id: 3, type: 'expense', categoryId: 1, amount: 1800, date: '2023-06-17', description: 'Ресторан' },
-  { id: 4, type: 'expense', categoryId: 3, amount: 25000, date: '2023-06-01', description: 'Аренда' },
-  { id: 5, type: 'expense', categoryId: 4, amount: 1500, date: '2023-06-18', description: 'Кино' },
-  { id: 6, type: 'expense', categoryId: 5, amount: 3000, date: '2023-06-10', description: 'Аптека' },
-  { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' }
-];
+// const transactions = [
+//   { id: 1, type: 'expense', categoryId: 1, amount: 3500, date: '2023-06-15', description: 'Продукты' },
+//   { id: 2, type: 'expense', categoryId: 2, amount: 1200, date: '2023-06-16', description: 'Такси' },
+//   { id: 3, type: 'expense', categoryId: 1, amount: 1800, date: '2023-06-17', description: 'Ресторан' },
+//   { id: 4, type: 'expense', categoryId: 3, amount: 25000, date: '2023-06-01', description: 'Аренда' },
+//   { id: 5, type: 'expense', categoryId: 4, amount: 1500, date: '2023-06-18', description: 'Кино' },
+//   { id: 6, type: 'expense', categoryId: 5, amount: 3000, date: '2023-06-10', description: 'Аптека' },
+//   { id: 7, type: 'expense', categoryId: 2, amount: 500, date: '2023-06-19', description: 'Метро' }
+// ];
 
 export function CategoryChart() {
-  // const { expenseCategories } = useCategoriesStore();
-  // const { transactions } = useTransactionsStore();
+  const { expenseCategories } = useCategoriesStore();
+  const { transactions } = useTransactionsStore();
   const [categoryData, setCategoryData] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const svgRef = useRef(null);

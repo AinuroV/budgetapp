@@ -112,7 +112,7 @@ export const useBudgetStore = create((set, get) => ({
 
     set({ isLoading: true, error: null });
     try {
-      const response = await fetch('http://localhost:3000/api/budget/limits', {
+      const response = await fetch('http://localhost:4444/api/budget/limits', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
