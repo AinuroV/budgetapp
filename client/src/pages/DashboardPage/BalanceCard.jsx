@@ -6,7 +6,7 @@ export function BalanceCard() {
   
   // Рассчитываем общие расходы
   const totalExpenses = Object.values(spendingByCategory).reduce((sum, amount) => sum + amount, 0);
-  const balance = monthlyBudget - totalExpenses;
+  const balance = Number(monthlyBudget?.amount) - totalExpenses;
 
   return (
     <Card className="h-100">
@@ -16,7 +16,7 @@ export function BalanceCard() {
           <h2 className={balance >= 0 ? 'text-success' : 'text-danger'}>
             {balance.toLocaleString()} ₽
           </h2>
-          <small className="text-muted">of {monthlyBudget?.toLocaleString()} ₽</small>
+          <small className="text-muted">из {monthlyBudget?.amount.toLocaleString()} ₽</small>
         </div>
       </Card.Body>
     </Card>

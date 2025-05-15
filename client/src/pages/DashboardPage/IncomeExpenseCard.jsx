@@ -17,11 +17,11 @@ export function IncomeExpenseCard() {
   // Считаем доходы и расходы
   const income = currentMonthTransactions
     .filter(t => t.type === 'income')
-    .reduce((sum, t) => sum + t.amount, 0);
+    .reduce((sum, t) => sum + Number(t?.amount), 0);
 
   const expenses = currentMonthTransactions
     .filter(t => t.type === 'expense')
-    .reduce((sum, t) => sum + t.amount, 0);
+    .reduce((sum, t) => sum + Number(t?.amount), 0);
 
   const total = income + expenses;
   const incomePercent = total > 0 ? Math.round((income / total) * 100) : 0;
@@ -30,7 +30,7 @@ export function IncomeExpenseCard() {
   return (
     <Card className="h-100">
       <Card.Body>
-        <Card.Title className="mb-4">Доходы и расходы</Card.Title>
+        <Card.Title className="mb-4">Доходы и расходы за текущий месяц</Card.Title>
         
         <div className="d-flex justify-content-between mb-2">
           <span className="text-success">Доходы: {income.toLocaleString()} ₽</span>

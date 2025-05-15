@@ -190,10 +190,10 @@ function calculateSpending(transactions, categoryLimits) {
   if (!transactions || !categoryLimits) return {};
   
   return transactions.reduce((acc, t) => {
-    if (!t || t.isTypeIncome || !t.categoryId) return acc;
+    if (!t || t.type === 'income' || !t.category_id) return acc;
     
-    const amount = Number(t.sum) || 0;
-    const categoryId = Number(t.categoryId) || t.categoryId;
+    const amount = Number(t.amount) || 0;
+    const categoryId = Number(t.category_id) || t.category_id;
     
     return {
       ...acc,
