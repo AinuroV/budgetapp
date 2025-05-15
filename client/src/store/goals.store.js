@@ -18,7 +18,7 @@ export const useGoalsStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch('http://localhost:3000/api/goals', {
+            const response = await fetch('http://localhost:4444/api/goals', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -55,7 +55,7 @@ export const useGoalsStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch('http://localhost:3000/api/goals', {
+            const response = await fetch('http://localhost:4444/api/goals/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,13 +105,13 @@ export const useGoalsStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch(`http://localhost:3000/api/goals/${id}`, {
-                method: 'PUT',
+            const response = await fetch('http://localhost:4444/api/goals/update', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(updates),
+                body: JSON.stringify({id,...updates}),
             });
 
             if (!response.ok) {
@@ -160,11 +160,12 @@ export const useGoalsStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch(`http://localhost:3000/api/goals/${id}`, {
-                method: 'DELETE',
+            const response = await fetch(`http://localhost:4444/api/goals/delete`, {
+                method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                body: JSON.stringify({id}),
             });
 
             if (!response.ok) {
@@ -208,13 +209,13 @@ export const useGoalsStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch(`http://localhost:3000/api/goals/${id}/add`, {
+            const response = await fetch(`http://localhost:4444/api/goals/add-money`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ amount }),
+                body: JSON.stringify({id, amount }),
             });
 
             if (!response.ok) {

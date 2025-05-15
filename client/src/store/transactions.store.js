@@ -44,7 +44,7 @@ export const useTransactionsStore = create((set, get) => ({
                 limit: get().pagination.itemsPerPage,
             });
 
-            const response = await fetch(`http://localhost:3000/api/transactions?${queryParams}`, {
+            const response = await fetch(`http://localhost:4444/api/transactions?${queryParams}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -77,7 +77,7 @@ export const useTransactionsStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch('http://localhost:3000/api/transactions', {
+            const response = await fetch('http://localhost:4444/api/transactions/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -122,13 +122,13 @@ export const useTransactionsStore = create((set, get) => ({
             const oldTransaction = currentState.transactions.find(t => t.id === id);
 
             // 2. Отправляем запрос
-            const response = await fetch(`http://localhost:3000/api/transactions/${id}`, {
-                method: 'PUT',
+            const response = await fetch('http://localhost:4444/api/transactions/update', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(updates),
+                body: JSON.stringify({id,...updates}),
             });
 
             if (!response.ok) {
@@ -173,11 +173,12 @@ export const useTransactionsStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch(`http://localhost:3000/api/transactions/${id}`, {
-                method: 'DELETE',
+            const response = await fetch('http://localhost:4444/api/transactions/delete', {
+                method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                body: JSON.stringify({id}),
             });
 
             if (!response.ok) {

@@ -19,7 +19,7 @@ export const useCategoriesStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch('http://localhost:3000/api/categories', {
+            const response = await fetch('http://localhost:4444/api/categories', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -56,7 +56,7 @@ export const useCategoriesStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch('http://localhost:3000/api/categories', {
+            const response = await fetch('http://localhost:4444/api/categories/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,13 +106,13 @@ export const useCategoriesStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch(`http://localhost:3000/api/categories/${id}`, {
-                method: 'PUT',
+            const response = await fetch('http://localhost:4444/api/categories/update', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(updates),
+                body: JSON.stringify({id,...updates}),
             });
 
             if (!response.ok) {
@@ -168,11 +168,12 @@ export const useCategoriesStore = create((set, get) => ({
 
         set({ isLoading: true, error: null });
         try {
-            const response = await fetch(`http://localhost:3000/api/categories/${id}`, {
-                method: 'DELETE',
+            const response = await fetch('http://localhost:4444/api/categories/delete', {
+                method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                body: JSON.stringify({id}),
             });
 
             if (!response.ok) {

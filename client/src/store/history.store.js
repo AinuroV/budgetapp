@@ -34,7 +34,7 @@ export const useHistoryStore = create((set, get) => ({
         ...(filters.endDate && { endDate: filters.endDate.toISOString() })
       });
 
-      const response = await fetch(`http://localhost:3000/api/history?${queryParams}`, {
+      const response = await fetch(`http://localhost:4444/api/history?${queryParams}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -78,7 +78,7 @@ export const useHistoryStore = create((set, get) => ({
     }));
 
     // Отправка на сервер
-    fetch('http://localhost:3000/api/history', {
+    fetch('http://localhost:4444/api/history/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -102,11 +102,12 @@ export const useHistoryStore = create((set, get) => ({
 
     set({ isLoading: true, error: null });
     try {
-      const response = await fetch(`http://localhost:3000/api/history/${actionId}/undo`, {
+      const response = await fetch('http://localhost:4444/api/history/undo', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({id:actionId})
       });
 
       if (!response.ok) {
