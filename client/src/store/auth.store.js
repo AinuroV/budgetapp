@@ -66,10 +66,10 @@ export const useAuthStore = create(
             throw new Error(errorData.message || 'Ошибка регистрации');
           }
 
-          const { token, user } = await response.json();
+          const { token, userId } = await response.json();
 
           set({
-            user,
+            user:{id:userId},
             token,
             isAuth: true,
             isLoading: false,

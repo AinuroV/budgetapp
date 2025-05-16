@@ -1,12 +1,19 @@
 import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '../../store/auth.store';
-import { Button, Form, Container, Alert, Card, FormCheck } from 'react-bootstrap';
+import { useBudgetStore } from '../../store/budget.store';
+import { Button, Form, Container, Alert, Card, FormCheck, Modal, Spinner } from 'react-bootstrap';
 import styles from './RegisterPage.module.css';
+import { useState } from 'react';
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
-  const { register: signUp, isLoading, error } = useAuthStore();
+  const { register: signUp, isLoading: isAuthLoading, error: authError } = useAuthStore();
+  const { setMonthlyBudget, isLoading: isBudgetLoading, error: budgetError } = useBudgetStore();
+  
+  const [showBudgetModal, setShowBudgetModal] = useState(false);
+  const [registeredUser, setRegisteredUser] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -16,6 +23,14 @@ export const RegisterPage = () => {
 
   const onSubmit = async (data) => {
     const success = await signUp(data.email, data.password);
+    if (success) {
+      setRegisteredUser(data.email);
+      setShowBudgetModal(true);
+    }
+  };
+
+  const handleBudgetSubmit = async (amount) => {
+    const success = await setMonthlyBudget(Number(amount));
     if (success) {
       navigate('/dashboard');
     }
@@ -27,9 +42,9 @@ export const RegisterPage = () => {
         <Card.Body className={styles.authCardBody}>
           <h2 className="text-center mb-4">Регистрация</h2>
           
-          {error && (
+          {authError && (
             <Alert variant="danger" className="mb-3">
-              {error}
+              {authError}
             </Alert>
           )}
 
@@ -112,9 +127,9 @@ export const RegisterPage = () => {
               <Button 
                 variant="primary" 
                 type="submit"
-                disabled={isLoading}
+                disabled={isAuthLoading}
               >
-                {isLoading ? 'Регистрация...' : 'Зарегистрироваться'}
+                {isAuthLoading ? 'Регистрация...' : 'Зарегистрироваться'}
               </Button>
             </div>
 
@@ -127,6 +142,74 @@ export const RegisterPage = () => {
           </Form>
         </Card.Body>
       </Card>
+
+      {/* Модальное окно для установки бюджета */}
+      <BudgetModal 
+        show={showBudgetModal}
+        onHide={() => setShowBudgetModal(false)}
+        onSubmit={handleBudgetSubmit}
+        isLoading={isBudgetLoading}
+        error={budgetError}
+        email={registeredUser}
+      />
     </Container>
+  );
+};
+
+const BudgetModal = ({ show, onHide, onSubmit, isLoading, email }) => {
+  const [amount, setAmount] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (amount) {
+      onSubmit(amount);
+    }
+  };
+
+  return (
+    <Modal show={show} onHide={onHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Установите ваш месячный бюджет</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p>Добро пожаловать, {email}! Перед началом работы укажите ваш месячный бюджет.</p>
+        
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Месячный бюджет</Form.Label>
+            <Form.Control
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Введите сумму"
+              required
+            />
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onHide}>
+          Пропустить
+        </Button>
+        <Button 
+          variant="primary" 
+          onClick={handleSubmit}
+          disabled={isLoading || !amount}
+        >
+          {isLoading ? (
+            <>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              <span className="ms-2">Сохранение...</span>
+            </>
+          ) : 'Сохранить'}
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };

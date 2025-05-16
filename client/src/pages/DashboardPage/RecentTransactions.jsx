@@ -26,8 +26,9 @@ export function RecentTransactions() {
       <Card>
         <Card.Body className="text-center py-5">
           <div className="text-muted mb-3">Нет транзакций</div>
-          <button className="btn btn-primary">Добавить транзакцию</button>
+          <button className="btn btn-primary" onClick={() => openModal('transaction')}>Добавить транзакцию</button>
         </Card.Body>
+        <TransactionModal />
       </Card>
     );
   }
