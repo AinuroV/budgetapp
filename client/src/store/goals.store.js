@@ -164,6 +164,7 @@ export const useGoalsStore = create((set, get) => ({
             const response = await fetch(`http://localhost:4444/api/goals/delete`, {
                 method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({id}),
@@ -259,7 +260,7 @@ export const useGoalsStore = create((set, get) => ({
     getGoalProgress: (id) => {
         const goal = get().goals.find(g => g.id === id);
         if (!goal) return 0;
-        return Math.min(100, (goal.currentAmount / goal.targetAmount) * 100);
+        return Math.min(100, (Number(goal.current_amount) / Number(goal.target_amount)) * 100);
     }
 }));
 

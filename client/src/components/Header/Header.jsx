@@ -27,6 +27,7 @@ export const Header = () => {
                 <Link to="/dashboard" className={styles.navLink}>Дашборд</Link>
                 <Link to="/transactions" className={styles.navLink}>Транзакции</Link>
                 <Link to="/budget" className={styles.navLink}>Бюджет</Link>
+                <Link to="/goals" className={styles.navLink}>Финансовые цели</Link>
                 <Link to="/statistics" className={styles.navLink}>Cтатистика</Link>
                 <Link to="/categories" className={styles.navLink}>Категории</Link>
                 <Link to="/history" className={styles.navLink}>История</Link>

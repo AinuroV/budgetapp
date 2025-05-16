@@ -90,8 +90,12 @@ class GoalController {
             return res.json({
                 id: goal.id,
                 title: goal.title,
+                description: goal.description,
                 target_amount: goal.target_amount,
-                updated_at: goal.updatedAt
+                current_amount: goal.current_amount,
+                deadline: goal.deadline,
+                completed: goal.completed,
+                created_at: goal.createdAt
             })
         } catch (e) {
             next(ApiError.internal(e.message))
@@ -154,8 +158,13 @@ class GoalController {
 
             return res.json({
                 id: goal.id,
+                title: goal.title,
+                description: goal.description,
+                target_amount: goal.target_amount,
                 current_amount: goal.current_amount,
-                updated_at: goal.updatedAt
+                deadline: goal.deadline,
+                completed: goal.completed,
+                created_at: goal.createdAt
             })
         } catch (e) {
             next(ApiError.internal(e.message))

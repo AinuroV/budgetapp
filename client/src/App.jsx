@@ -14,6 +14,7 @@ import { HelpPage } from './pages/HelpPage/HelpPage'
 import { StatisticsPage } from './pages/StatisticsPage/StatisticsPage'
 import { HistoryPage } from './pages/HistoryPage/HistoryPage'
 import { CategoriesPage } from './pages/CategoriesPage/CategoriesPage'
+import { GoalsPage } from './pages/GoalsPage/GoalsPage'
 import { Chart, registerables } from 'chart.js';
 import { useInitStore } from './store/useInitStore'
 
@@ -78,6 +79,10 @@ function App() {
         {
           path: 'categories',
           element: <RequireSignIn><CategoriesPage /></RequireSignIn>
+        },
+        {
+          path: 'goals',
+          element: <RequireSignIn><GoalsPage /></RequireSignIn>
         }
       ],
     },
