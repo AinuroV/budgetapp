@@ -6,7 +6,7 @@ export const RequireSignIn = ({ children }) => {
     const location = useLocation();
 
     if (!isAuth) {
-        return <Navigate to={'/login'} state={{ from: location }}/>
+        return <Navigate to={'/login'} state={{ from: location }} replace/>
     }
     return children;
 }

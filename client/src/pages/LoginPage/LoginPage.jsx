@@ -1,4 +1,5 @@
-import { Link, useNavigate } from 'react-router';
+import { useEffect } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '../../store/auth.store';
 import { Button, Form, Container, Alert, Card } from 'react-bootstrap';
@@ -6,12 +7,19 @@ import styles from './LoginPage.module.css';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
-    const { login, isLoading, error } = useAuthStore();
+    const location = useLocation()
+    const { login, isLoading, error, isAuth } = useAuthStore();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
+
+    const fromPage = location.state ? location.state.from.pathname : '/dashboard'
+
+    useEffect(() => {
+        if (isAuth) navigate(fromPage)
+    }, [isAuth,fromPage,navigate])
 
     const onSubmit = async (data) => {
         const success = await login(data.email, data.password);
