@@ -1,4 +1,3 @@
-// src/store/goals.store.js
 import { create } from 'zustand';
 import { useAuthStore } from './auth.store';
 import { useHistoryStore } from './history.store';

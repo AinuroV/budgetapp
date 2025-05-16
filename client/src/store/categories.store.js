@@ -1,4 +1,3 @@
-// src/store/categories.store.js
 import { create } from 'zustand';
 import { useAuthStore } from './auth.store';
 import { useTransactionsStore } from './transactions.store';

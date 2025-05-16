@@ -15,10 +15,12 @@ import { StatisticsPage } from './pages/StatisticsPage/StatisticsPage'
 import { HistoryPage } from './pages/HistoryPage/HistoryPage'
 import { CategoriesPage } from './pages/CategoriesPage/CategoriesPage'
 import { Chart, registerables } from 'chart.js';
-
+import { useInitStore } from './store/useInitStore'
 
 
 function App() {
+  useInitStore()
+
   Chart.register(...registerables);
   const router = createBrowserRouter([
     {

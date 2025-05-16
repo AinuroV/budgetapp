@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import {BalanceCard} from '../DashboardPage/BalanceCard';
@@ -7,16 +6,11 @@ import {CategoryChart} from '../DashboardPage/CategoryChart';
 import {RecentTransactions} from '../DashboardPage/RecentTransactions';
 
 import {useTransactionsStore} from '../../store/transactions.store';
-import {useBudgetStore} from '../../store/budget.store';
+
 
 export function DashboardPage() {
-  const { fetchTransactions, transactions } = useTransactionsStore();
-  const { fetchBudgetData } = useBudgetStore();
+  const { transactions } = useTransactionsStore();
 
-  useEffect(() => {
-    fetchTransactions();
-    fetchBudgetData();
-  }, [fetchTransactions, fetchBudgetData]);
 
   // Получаем последние 5 транзакций
   const recentTransactions = transactions.slice(0, 5);

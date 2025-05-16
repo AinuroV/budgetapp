@@ -1,4 +1,3 @@
-// src/store/auth.store.js
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -190,6 +189,3 @@ export const useAuthStore = create(
     }
   )
 );
-
-// Инициализация проверки аутентификации при загрузке
-useAuthStore.getState().checkAuth();

@@ -1,4 +1,3 @@
-// src/store/budget.store.js
 import { create } from 'zustand';
 import { useAuthStore } from './auth.store';
 import { useCategoriesStore } from './categories.store';

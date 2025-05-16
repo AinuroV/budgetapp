@@ -1,4 +1,3 @@
-// src/store/history.store.js
 import { create } from 'zustand';
 import { useAuthStore } from './auth.store';
 
