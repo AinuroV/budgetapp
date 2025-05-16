@@ -40,14 +40,15 @@ export const CategoriesList = ({ categories }) => {
             <tr key={category.id}>
               <td>{category.name}</td>
               <td>
-                <Badge
+                <span
+                  className='badge'
                   style={{
                     backgroundColor: category.color,
                     color: getContrastColor(category.color)
                   }}
                 >
                   {category.color}
-                </Badge>
+                </span>
               </td>
               <td>
                 <Button

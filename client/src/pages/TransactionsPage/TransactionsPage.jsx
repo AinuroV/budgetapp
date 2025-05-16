@@ -8,7 +8,6 @@ import {
   Button,
   Form,
   InputGroup,
-  Badge,
   Spinner,
   Dropdown
 } from 'react-bootstrap';

@@ -74,7 +74,7 @@ export function TransactionModal({ transaction, onClose }) {
         } else {
             // Добавление новой транзакции
             success = await addTransaction(transactionData);
-            if (success) {
+            if (success && transactionData.type === "income" ) {
                 await setMonthlyBudget(Number(data.amount) + balance);
             }
         }
@@ -166,7 +166,7 @@ export function TransactionModal({ transaction, onClose }) {
                     <Form.Group className="mb-3">
                         <Form.Label>Сумма</Form.Label>
                         <Form.Control
-                            type="number"
+                            type="text"
                             {...register('amount', {
                                 required: 'Введите сумму',
                             })}

@@ -151,10 +151,11 @@ export const useTransactionsStore = create((set, get) => ({
 
             // 5. Логируем действие
             useHistoryStore.getState().addAction({
-                type: 'UPDATE_TRANSACTION',
-                entityId: id,
-                oldData: oldTransaction,
-                newData: updatedTransaction
+                action_type: 'UPDATE',
+                entity_type:'Transaction',
+                entity_id: id,
+                old_data: oldTransaction,
+                new_data: updatedTransaction,
             });
 
             return true;

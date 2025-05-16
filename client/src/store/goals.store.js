@@ -82,9 +82,10 @@ export const useGoalsStore = create((set, get) => ({
 
             // Добавляем запись в историю
             useHistoryStore.getState().addAction({
-                type: 'ADD_GOAL',
-                entityId: newGoal.id,
-                newData: newGoal
+                action_type: 'ADD',
+                entity_type:'Goal',
+                entity_id: newGoal.id,
+                new_data: newGoal
             });
 
             return true;
@@ -136,10 +137,11 @@ export const useGoalsStore = create((set, get) => ({
 
             // Добавляем запись в историю
             useHistoryStore.getState().addAction({
-                type: 'UPDATE_GOAL',
-                entityId: id,
-                oldData: oldGoal,
-                newData: updatedGoal
+                action_type: 'UPDATE',
+                entity_type:'Goal',
+                entity_id: id,
+                old_data: oldGoal,
+                new_data: updatedGoal
             });
 
             return true;
@@ -185,9 +187,10 @@ export const useGoalsStore = create((set, get) => ({
 
             // Добавляем запись в истории
             useHistoryStore.getState().addAction({
-                type: 'DELETE_GOAL',
-                entityId: id,
-                oldData: deletedGoal
+                action_type: 'DELETE',
+                entity_type:'Goal',
+                entity_id: id,
+                old_data: deletedGoal
             });
 
             return true;

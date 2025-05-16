@@ -92,7 +92,7 @@ class HistoryController {
             const history = await HistoryAction.findAll({
                 where,
                 order: [['timestamp', 'DESC']],
-                attributes: ['id', 'action_type', 'entity_type', 'entity_id', 'old_data', 'new_data', 'timestamp']
+                attributes: ['id', 'action_type', 'entity_type', 'entity_id', 'old_data', 'new_data', 'timestamp','user_id']
             })
             
             return res.json(history)
@@ -134,7 +134,8 @@ class HistoryController {
                 action_type: action.action_type,
                 entity_type: action.entity_type,
                 entity_id: action.entity_id,
-                timestamp: action.timestamp
+                timestamp: action.timestamp,
+                user_id: userId
             })
         } catch (e) {
             next(ApiError.internal(e.message))

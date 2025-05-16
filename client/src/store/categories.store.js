@@ -83,9 +83,10 @@ export const useCategoriesStore = create((set, get) => ({
 
             // Добавляем запись в историю
             useHistoryStore.getState().addAction({
-                type: 'ADD_CATEGORY',
-                entityId: newCategory.id,
-                newData: newCategory
+                action_type: 'ADD',
+                entity_type:'Category',
+                entity_id: newCategory.id,
+                new_data: newCategory
             });
 
             return true;
@@ -144,10 +145,11 @@ export const useCategoriesStore = create((set, get) => ({
 
             // Добавляем запись в историю
             useHistoryStore.getState().addAction({
-                type: 'UPDATE_CATEGORY',
-                entityId: id,
-                oldData: oldCategory,
-                newData: updatedCategory
+                action_type: 'UPDATE',
+                entity_type:'Category',
+                entity_id: id,
+                old_data: oldCategory,
+                new_data: updatedCategory
             });
 
             return true;
@@ -197,9 +199,10 @@ export const useCategoriesStore = create((set, get) => ({
 
             // Добавляем запись в историю
             useHistoryStore.getState().addAction({
-                type: 'DELETE_CATEGORY',
-                entityId: id,
-                oldData: deletedCategory
+                action_type: 'DELETE',
+                entity_type:'Category',
+                entity_id: id,
+                old_data: deletedCategory 
             });
 
             return true;

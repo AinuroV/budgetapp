@@ -88,9 +88,10 @@ export const useBudgetStore = create((set, get) => ({
 
       // Запись в историю
       useHistoryStore.getState().addAction({
-        type: 'UPDATE_BUDGET',
-        oldData: oldBudget,
-        newData: newBudget
+        action_type: 'UPDATE_BUDGET',
+        entity_type:'Budget',
+        old_data: oldBudget,
+        new_data: newBudget,
       });
 
       return true;
@@ -145,10 +146,11 @@ export const useBudgetStore = create((set, get) => ({
 
       // Запись в историю
       useHistoryStore.getState().addAction({
-        type: 'SET_CATEGORY_LIMIT',
-        entityId: categoryId,
-        oldData: oldLimits[categoryId],
-        newData: updatedLimit.limit
+        action_type: 'SET_CATEGORY_LIMIT',
+        entity_type:'Budget',
+        entity_id: categoryId,
+        old_data: oldLimits[categoryId],
+        new_data: updatedLimit.limit
       });
 
       return true;

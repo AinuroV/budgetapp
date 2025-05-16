@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
     Container,
     Card,
@@ -9,8 +9,7 @@ import {
     Spinner,
     Alert,
     Row,
-    Col,
-    InputGroup
+    Col
 } from 'react-bootstrap';
 import {useHistoryStore} from '../../store/history.store';
 import {useAuthStore} from '../../store/auth.store';
@@ -58,8 +57,6 @@ export function HistoryPage() {
         isLoading,
         error,
         filters,
-        fetchHistory,
-        undoAction,
         setFilter
     } = useHistoryStore();
 
@@ -68,9 +65,6 @@ export function HistoryPage() {
     const [customStartDate, setCustomStartDate] = useState('');
     const [customEndDate, setCustomEndDate] = useState('');
 
-    useEffect(() => {
-        fetchHistory();
-    }, [fetchHistory]);
 
     const handleDateRangeChange = (range) => {
         setFilter('dateRange', range);
@@ -94,20 +88,6 @@ export function HistoryPage() {
         setFilter('startDate', startDate);
         setFilter('endDate', endDate);
         setFilter('dateRange', 'custom');
-    };
-
-    const handleUndo = async (actionId) => {
-        const success = await undoAction(actionId);
-        if (success) {
-            // Можно добавить уведомление об успехе
-            console.log('Действие успешно отменено');
-        }
-    };
-
-    const canUndo = (action) => {
-        // Определяем, какие действия можно отменять
-        return ['ADD', 'UPDATE', 'DELETE'].includes(action.type) &&
-            ['Transaction', 'Category'].includes(action.entityType);
     };
 
     return (
@@ -223,7 +203,6 @@ export function HistoryPage() {
                                         <th>Сущность</th>
                                         <th>Описание</th>
                                         <th>Пользователь</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -233,53 +212,42 @@ export function HistoryPage() {
                                             <td>
                                                 <Badge
                                                     bg={
-                                                        action.type === 'ADD' ? 'success' :
-                                                            action.type === 'UPDATE' ? 'warning' : 'danger'
+                                                        action.action_type === 'ADD' ? 'success' :
+                                                            action.action_type === 'UPDATE' ? 'warning' : 'danger'
                                                     }
                                                 >
-                                                    {getActionTypeName(action.type)}
+                                                    {getActionTypeName(action.action_type)}
                                                 </Badge>
                                             </td>
-                                            <td>{getEntityTypeName(action.entityType)}</td>
+                                            <td>{getEntityTypeName(action.entity_type)}</td>
                                             <td>
-                                                {action.entityType === 'Transaction' && (
+                                                {action.entity_type === 'Transaction' && (
                                                     <>
-                                                        {action.type === 'ADD' && 'Добавлена транзакция'}
-                                                        {action.type === 'UPDATE' && 'Изменена транзакция'}
-                                                        {action.type === 'DELETE' && 'Удалена транзакция'}
+                                                        {action.action_type === 'ADD' && 'Добавлена транзакция'}
+                                                        {action.action_type === 'UPDATE' && 'Изменена транзакция'}
+                                                        {action.action_type === 'DELETE' && 'Удалена транзакция'}
                                                         {action.data?.amount &&
                                                             ` (${action.data.amount.toLocaleString('ru-RU')} ₽)`}
                                                     </>
                                                 )}
-                                                {action.entityType === 'Category' && (
+                                                {action.entity_type === 'Category' && (
                                                     <>
-                                                        {action.type === 'ADD' && 'Добавлена категория'}
-                                                        {action.type === 'UPDATE' && 'Изменена категория'}
-                                                        {action.type === 'DELETE' && 'Удалена категория'}
+                                                        {action.action_type === 'ADD' && 'Добавлена категория'}
+                                                        {action.action_type === 'UPDATE' && 'Обновлена категория'}
+                                                        {action.action_type === 'DELETE' && 'Удалена категория'}
                                                         {action.data?.name && `: ${action.data.name}`}
                                                     </>
                                                 )}
-                                                {action.entityType === 'Budget' && (
+                                                {action.entity_type === 'Budget' && (
                                                     <>
-                                                        {action.type === 'UPDATE_BUDGET' &&
-                                                            `Бюджет изменен на ${action.newData.amount.toLocaleString('ru-RU')} ₽`}
-                                                        {action.type === 'SET_CATEGORY_LIMIT' &&
-                                                            `Лимит категории установлен в ${action.newData.toLocaleString('ru-RU')} ₽`}
+                                                        {action.action_type === 'UPDATE_BUDGET' &&
+                                                            `Бюджет изменен на ${action.new_data.toLocaleString('ru-RU')} ₽`}
+                                                        {action.action_type === 'SET_CATEGORY_LIMIT' &&
+                                                            `Лимит категории установлен в ${action.new_data.toLocaleString('ru-RU')} ₽`}
                                                     </>
                                                 )}
                                             </td>
-                                            <td>{action.userId === user?.id ? 'Вы' : 'Система'}</td>
-                                            <td className="text-end">
-                                                {canUndo(action) && (
-                                                    <Button
-                                                        variant="outline-secondary"
-                                                        size="sm"
-                                                        onClick={() => handleUndo(action.id)}
-                                                    >
-                                                        Отменить
-                                                    </Button>
-                                                )}
-                                            </td>
+                                            <td>{action.user_id === user?.userId ? 'Вы' : 'Система'}</td>
                                         </tr>
                                     ))}
                                 </tbody>

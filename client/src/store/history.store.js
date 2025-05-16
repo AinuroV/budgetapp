@@ -148,7 +148,7 @@ export const useHistoryStore = create((set, get) => ({
 
     // Фильтрация по типу действия
     if (filters.actionType) {
-      filtered = filtered.filter(a => a.type === filters.actionType);
+      filtered = filtered.filter(a => a.action_type === filters.actionType);
     }
 
     // Фильтрация по типу сущности
@@ -160,7 +160,7 @@ export const useHistoryStore = create((set, get) => ({
           BUDGET: 'Budget',
           GOAL: 'Goal'
         };
-        return a.entityType === entityMap[filters.entityType];
+        return a.entity_type === entityMap[filters.entityType];
       });
     }
 
