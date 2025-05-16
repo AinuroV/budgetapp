@@ -13,41 +13,8 @@ import { Chart } from 'chart.js';
 import { useTransactionsStore } from '../../store/transactions.store';
 import { useUIStore } from '../../store/ui.store';
 
-
-// Моковые данные транзакций
-// const mockTransactions = [
-//     { id: 1, type: 'income', amount: 50000, date: '2023-06-01', description: 'Зарплата', categoryId: 1 },
-//     { id: 2, type: 'expense', amount: 15000, date: '2023-06-05', description: 'Аренда', categoryId: 2 },
-//     { id: 3, type: 'expense', amount: 5000, date: '2023-06-10', description: 'Продукты', categoryId: 3 },
-//     { id: 4, type: 'income', amount: 10000, date: '2023-06-15', description: 'Фриланс', categoryId: 1 },
-//     { id: 5, type: 'expense', amount: 3000, date: '2023-06-20', description: 'Транспорт', categoryId: 4 },
-//     { id: 6, type: 'expense', amount: 7000, date: '2023-05-01', description: 'Аренда', categoryId: 2 },
-//     { id: 7, type: 'income', amount: 45000, date: '2023-05-01', description: 'Зарплата', categoryId: 1 },
-//     { id: 8, type: 'expense', amount: 2000, date: '2023-05-05', description: 'Развлечения', categoryId: 5 },
-//     { id: 9, type: 'expense', amount: 4000, date: '2023-05-10', description: 'Продукты', categoryId: 3 },
-//     { id: 10, type: 'expense', amount: 2500, date: '2023-05-15', description: 'Кафе', categoryId: 6 },
-// ];
-
-// // Мок для useTransactionsStore
-// const mockTransactionsStore = {
-//     transactions: mockTransactions,
-//     filteredTransactions: mockTransactions,
-//     isLoading: false,
-//     error: null,
-//     fetchTransactions: () => console.log('Fetching transactions...'),
-// };
-
-// // Мок для useUIStore
-// const mockUIStore = {
-//     addToast: (toast) => console.log('Toast:', toast)
-// };
-
 export function StatisticsPage() {
-    // Временная замена для тестирования
-    // const useTransactionsStore = () => mockTransactionsStore;
-    // const useUIStore = () => mockUIStore;
-
-    const { transactions, fetchTransactions, isLoading } = useTransactionsStore();
+    const { transactions, isLoading } = useTransactionsStore();
     const { addToast } = useUIStore();
 
 
@@ -58,10 +25,6 @@ export function StatisticsPage() {
     const barChartRef = useRef(null);
     const lineChartInstance = useRef(null);
     const barChartInstance = useRef(null);
-
-    useEffect(() => {
-        fetchTransactions();
-    }, [fetchTransactions]);
 
     useEffect(() => {
         if (transactions.length > 0) {

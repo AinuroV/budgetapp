@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { 
   Container, 
   Row, 
@@ -37,10 +37,8 @@ const formatDateWithMonth = (dateString) => {
 
 export function TransactionsPage() {
   const {
-    transactions,
     filteredTransactions,
     isLoading,
-    fetchTransactions,
     setFilter,
     pagination,
     setPage,
@@ -51,10 +49,6 @@ export function TransactionsPage() {
   const { openModal } = useUIStore();
 
   const [localSearch, setLocalSearch] = useState('');
-
-  useEffect(() => {
-    fetchTransactions();
-  }, [fetchTransactions]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -73,8 +67,8 @@ export function TransactionsPage() {
     setLocalSearch('');
   };
 
-  const getCategoryName = (categoryId, transactionType) => {
-    if (!categoryId) return transactionType === 'income' ? 'Доход' : 'Расход';
+  const getCategoryName = (categoryId) => {
+    if (!categoryId) return '-'
     const category = getCategoryById(categoryId);
     return category?.name || 'Неизвестно';
   };
@@ -85,9 +79,7 @@ export function TransactionsPage() {
     return category?.color || '#6c757d';
   };
 
-  const displayTransactions = filteredTransactions.length > 0 
-    ? filteredTransactions 
-    : transactions;
+  const displayTransactions = filteredTransactions;
 
   return (
     <Container className="py-4">
@@ -192,7 +184,7 @@ export function TransactionsPage() {
       {/* Таблица транзакций */}
       <Card>
         <Card.Body>
-          {isLoading && transactions.length === 0 ? (
+          {isLoading && displayTransactions.length === 0 ? (
             <div className="text-center py-5">
               <Spinner animation="border" variant="primary" />
             </div>
@@ -208,6 +200,7 @@ export function TransactionsPage() {
                     <tr>
                       <th>Дата</th>
                       <th>Описание</th>
+                      <th>Тип</th>
                       <th>Категория</th>
                       <th className="text-end">Сумма</th>
                     </tr>
@@ -217,17 +210,17 @@ export function TransactionsPage() {
                       <tr key={t.id}>
                         <td>{formatDateWithMonth(t.date)}</td>
                         <td>{t.description || '-'}</td>
+                        <td>{t.type === 'income' ? 'Доход' : 'Расход'}</td>
                         <td>
-                          <Badge 
-                            bg="light" 
-                            text="dark"
+                          <span 
+                            className='badge'
                             style={{ 
-                              backgroundColor: `${getCategoryColor(t.categoryId)}20`,
-                              color: getCategoryColor(t.categoryId)
+                              backgroundColor: `${getCategoryColor(t.category_id)}20`,
+                              color: getCategoryColor(t.category_id)
                             }}
                           >
-                            {getCategoryName(t.categoryId, t.type)}
-                          </Badge>
+                            {getCategoryName(t.category_id, t.type)}
+                          </span>
                         </td>
                         <td className={`text-end fw-bold ${t.type === 'income' ? 'text-success' : 'text-danger'}`}>
                           {t.type === 'income' ? '+' : '-'}

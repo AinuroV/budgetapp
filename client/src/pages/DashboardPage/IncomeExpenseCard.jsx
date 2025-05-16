@@ -44,11 +44,11 @@ export function IncomeExpenseCard() {
         
         <div className="d-flex justify-content-around text-center">
           <div>
-            <div className="text-muted">Срд. доход</div>
+            <div className="text-muted">Срд. дневной доход </div>
             <h4>{(income / 30).toLocaleString(undefined, { maximumFractionDigits: 0 })} ₽</h4>
           </div>
           <div>
-            <div className="text-muted">Срд. расход</div>
+            <div className="text-muted">Срд. дневной расход</div>
             <h4>{(expenses / 30).toLocaleString(undefined, { maximumFractionDigits: 0 })} ₽</h4>
           </div>
         </div>

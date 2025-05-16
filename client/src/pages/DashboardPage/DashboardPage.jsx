@@ -1,19 +1,11 @@
 import { Container, Row, Col } from 'react-bootstrap';
-
 import {BalanceCard} from '../DashboardPage/BalanceCard';
 import {IncomeExpenseCard} from '../DashboardPage/IncomeExpenseCard';
 import {CategoryChart} from '../DashboardPage/CategoryChart';
 import {RecentTransactions} from '../DashboardPage/RecentTransactions';
 
-import {useTransactionsStore} from '../../store/transactions.store';
-
 
 export function DashboardPage() {
-  const { transactions } = useTransactionsStore();
-
-
-  // Получаем последние 5 транзакций
-  const recentTransactions = transactions.slice(0, 5);
 
   return (
     <Container className="py-4">
@@ -33,7 +25,7 @@ export function DashboardPage() {
           <CategoryChart />
         </Col>
         <Col md={6}>
-          <RecentTransactions transactions={recentTransactions} />
+          <RecentTransactions/>
         </Col>
       </Row>
     </Container>

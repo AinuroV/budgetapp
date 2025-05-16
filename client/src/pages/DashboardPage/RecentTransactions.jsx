@@ -7,8 +7,7 @@ import { TransactionModal } from '../../components/Modals/TransactionModal';
 
 export function RecentTransactions() {
   const {
-    transactions,
-    filteredTransactions
+    transactions
   } = useTransactionsStore();
 
   const { getCategoryById } = useCategoriesStore();
@@ -20,11 +19,7 @@ export function RecentTransactions() {
   };
 
   // Используем фильтрованные транзакции если они есть, иначе все
-  const displayTransactions = filteredTransactions.length > 0
-    ? filteredTransactions
-    : transactions;
-
-  const recentTransactions = displayTransactions.slice(0, 5);
+  const recentTransactions = transactions.slice(0, 5);
 
   if (recentTransactions.length === 0) {
     return (

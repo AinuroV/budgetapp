@@ -17,7 +17,7 @@ export const CategoryForm = ({ category, onClose }) => {
     } = useForm({
         defaultValues: {
             name: category?.name || '',
-            isTypeIncome: category?.isTypeIncome || false,
+            is_type_income: category?.is_type_income || false,
         },
     });
 
@@ -25,7 +25,7 @@ export const CategoryForm = ({ category, onClose }) => {
         if (category) {
             reset({
                 name: category.name,
-                isTypeIncome: category.isTypeIncome,
+                is_type_income: category.is_type_income,
             });
             setSelectedColor(category.color);
         }
@@ -34,6 +34,7 @@ export const CategoryForm = ({ category, onClose }) => {
     const onSubmit = async (data) => {
         const categoryData = {
             ...data,
+            is_type_income: data.is_type_income === 'true',
             color: selectedColor,
         };
 
@@ -81,7 +82,7 @@ export const CategoryForm = ({ category, onClose }) => {
                         <Col md={3}>
                             <Form.Group className="mb-3">
                                 <Form.Label>Тип категории</Form.Label>
-                                <Form.Select {...register('isTypeIncome')}>
+                                <Form.Select {...register('is_type_income')}>
                                     <option value={false}>Расход</option>
                                     <option value={true}>Доход</option>
                                 </Form.Select>
@@ -133,7 +134,7 @@ export const CategoryForm = ({ category, onClose }) => {
 
                             <Form.Group className="mb-3">
                                 <Form.Label>Тип категории</Form.Label>
-                                <Form.Select {...register('isTypeIncome')}>
+                                <Form.Select {...register('is_type_income')}>
                                     <option value={false}>Расход</option>
                                     <option value={true}>Доход</option>
                                 </Form.Select>

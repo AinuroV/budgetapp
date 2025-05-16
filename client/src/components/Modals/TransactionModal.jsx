@@ -2,14 +2,18 @@ import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useTransactionsStore } from '../../store/transactions.store';
 import { useCategoriesStore } from '../../store/categories.store';
+import { useBudgetStore } from '../../store/budget.store';
 import { useUIStore } from '../../store/ui.store';
 import { useEffect } from 'react';
 
 export function TransactionModal() {
     const { addTransaction, isLoading: isAdding } = useTransactionsStore();
+    const { setMonthlyBudget,monthlyBudget } = useBudgetStore()
     const { expenseCategories, incomeCategories, fetchCategories } = useCategoriesStore();
     const { currentModal, closeModal } = useUIStore();
     const isOpen = currentModal === 'transaction';
+
+    const balance = Number(monthlyBudget?.amount)
 
     const {
         register,
@@ -21,7 +25,7 @@ export function TransactionModal() {
     } = useForm({
         defaultValues: {
             type: 'expense',
-            categoryId: '',
+            category_id: '',
             amount: '',
             date: new Date().toISOString().split('T')[0],
             description: ''
@@ -44,10 +48,12 @@ export function TransactionModal() {
             amount: Number(data.amount),
             date: data.date,
             description: data.description,
-            categoryId: data.type === 'income' ? null : data.categoryId
+            category_id: data.category_id
         });
 
-        if (success) {
+        const successBudget = await setMonthlyBudget(Number(data.amount)+balance)
+
+        if (success && successBudget) {
             closeModal('transaction');
         }
     };
@@ -55,11 +61,11 @@ export function TransactionModal() {
     // Автоматически выбираем первую категорию при изменении типа
     useEffect(() => {
         if (transactionType === 'expense' && expenseCategories.length > 0) {
-            setValue('categoryId', expenseCategories[0].id);
+            setValue('category_id', expenseCategories[0].id);
         } else if (transactionType === 'income' && incomeCategories.length > 0) {
-            setValue('categoryId', incomeCategories[0].id);
+            setValue('category_id', incomeCategories[0].id);
         } else {
-            setValue('categoryId', '');
+            setValue('category_id', '');
         }
     }, [transactionType, expenseCategories, incomeCategories, setValue]);
 
@@ -95,10 +101,10 @@ export function TransactionModal() {
                             {transactionType === 'income' ? 'Категория дохода' : 'Категория расхода'}
                         </Form.Label>
                         <Form.Select
-                            {...register('categoryId', {
+                            {...register('category_id', {
                                 required: 'Выберите категорию'
                             })}
-                            isInvalid={!!errors.categoryId}
+                            isInvalid={!!errors.category_id}
                         >
                             {transactionType === 'income' ? (
                                 <>
@@ -118,9 +124,9 @@ export function TransactionModal() {
                                 </>
                             )}
                         </Form.Select>
-                        {errors.categoryId && (
+                        {errors.category_id && (
                             <Form.Control.Feedback type="invalid">
-                                {errors.categoryId.message}
+                                {errors.category_id.message}
                             </Form.Control.Feedback>
                         )}
                     </Form.Group>
@@ -131,7 +137,6 @@ export function TransactionModal() {
                             type="number"
                             {...register('amount', {
                                 required: 'Введите сумму',
-                                min: { value: 1, message: 'Сумма должна быть больше 0' }
                             })}
                             isInvalid={!!errors.amount}
                         />

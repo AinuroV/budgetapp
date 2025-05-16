@@ -31,8 +31,8 @@ export const useCategoriesStore = create((set, get) => ({
             const categories = await response.json();
 
             // Разделяем категории на доходы/расходы
-            const incomeCategories = categories.filter(c => c.isTypeIncome);
-            const expenseCategories = categories.filter(c => !c.isTypeIncome);
+            const incomeCategories = categories.filter(c => c.is_type_income);
+            const expenseCategories = categories.filter(c => !c.is_type_income);
 
             set({
                 categories,
@@ -75,8 +75,8 @@ export const useCategoriesStore = create((set, get) => ({
                 const updatedCategories = [...state.categories, newCategory];
                 return {
                     categories: updatedCategories,
-                    [newCategory.isTypeIncome ? 'incomeCategories' : 'expenseCategories']:
-                        [...state[newCategory.isTypeIncome ? 'incomeCategories' : 'expenseCategories'], newCategory],
+                    [newCategory.is_type_income ? 'incomeCategories' : 'expenseCategories']:
+                        [...state[newCategory.is_type_income ? 'incomeCategories' : 'expenseCategories'], newCategory],
                     isLoading: false,
                 };
             });
@@ -128,8 +128,8 @@ export const useCategoriesStore = create((set, get) => ({
                 );
 
                 // Обновляем разделенные списки
-                const incomeCategories = updatedCategories.filter(c => c.isTypeIncome);
-                const expenseCategories = updatedCategories.filter(c => !c.isTypeIncome);
+                const incomeCategories = updatedCategories.filter(c => c.is_type_income);
+                const expenseCategories = updatedCategories.filter(c => !c.is_type_income);
 
                 return {
                     categories: updatedCategories,
@@ -170,6 +170,7 @@ export const useCategoriesStore = create((set, get) => ({
             const response = await fetch('http://localhost:4444/api/categories/delete', {
                 method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({id}),
@@ -185,8 +186,8 @@ export const useCategoriesStore = create((set, get) => ({
                 const updatedCategories = state.categories.filter(c => c.id !== id);
                 return {
                     categories: updatedCategories,
-                    incomeCategories: updatedCategories.filter(c => c.isTypeIncome),
-                    expenseCategories: updatedCategories.filter(c => !c.isTypeIncome),
+                    incomeCategories: updatedCategories.filter(c => c.is_type_income),
+                    expenseCategories: updatedCategories.filter(c => !c.is_type_income),
                     isLoading: false,
                 };
             });

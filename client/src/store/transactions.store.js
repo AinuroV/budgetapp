@@ -40,7 +40,7 @@ export const useTransactionsStore = create((set, get) => ({
                 ...(filters.type && { type: filters.type }),
                 ...(filters.searchQuery && { search: filters.searchQuery }),
                 page: get().pagination.currentPage,
-                limit: get().pagination.itemsPerPage,
+                limit: 1000,
             });
 
             const response = await fetch(`http://localhost:4444/api/transactions?${queryParams}`, {
@@ -61,6 +61,7 @@ export const useTransactionsStore = create((set, get) => ({
                 pagination: { ...get().pagination, totalItems: total },
                 isLoading: false,
             });
+            get().applyFilters();
         } catch (error) {
             console.error('Fetch transactions error:', error);
             set({
@@ -213,7 +214,6 @@ export const useTransactionsStore = create((set, get) => ({
 
     applyFilters: () => {
         const { transactions, filters } = get();
-
         let filtered = [...transactions];
 
         // Фильтрация по дате
@@ -243,19 +243,19 @@ export const useTransactionsStore = create((set, get) => ({
 
         // Фильтрация по категории
         if (filters.category) {
-            filtered = filtered.filter(t => t.categoryId === filters.category);
+            filtered = filtered.filter(t => Number(t?.category_id) === Number(filters.category));
         }
 
         // Фильтрация по типу
         if (filters.type) {
-            filtered = filtered.filter(t => t.isTypeIncome === (filters.type === 'income'));
+            filtered = filtered.filter(t => t.type === filters.type);
         }
 
         // Поиск по описанию
         if (filters.searchQuery) {
             const query = filters.searchQuery.toLowerCase();
             filtered = filtered.filter(t =>
-                t.name.toLowerCase().includes(query) ||
+                t?.description?.toLowerCase().includes(query) ||
                 (t.description && t.description.toLowerCase().includes(query))
             );
         }
@@ -266,7 +266,7 @@ export const useTransactionsStore = create((set, get) => ({
             (currentPage - 1) * itemsPerPage,
             currentPage * itemsPerPage
         );
-
+        
         set({
             filteredTransactions: paginated,
             pagination: { ...get().pagination, totalItems: filtered.length },
