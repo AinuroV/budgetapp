@@ -67,7 +67,7 @@ export const useHistoryStore = create((set, get) => ({
     const newAction = {
       ...action,
       timestamp: new Date().toISOString(),
-      userId: useAuthStore.getState().user.id
+      userId: useAuthStore.getState()?.user?.id
     };
 
     // Оптимистичное обновление UI
