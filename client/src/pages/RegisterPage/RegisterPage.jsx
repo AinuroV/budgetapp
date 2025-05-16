@@ -178,7 +178,7 @@ const BudgetModal = ({ show, onHide, onSubmit, isLoading, email }) => {
           <Form.Group className="mb-3">
             <Form.Label>Месячный бюджет</Form.Label>
             <Form.Control
-              type="number"
+              type="text"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="Введите сумму"
