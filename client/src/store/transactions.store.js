@@ -176,6 +176,7 @@ export const useTransactionsStore = create((set, get) => ({
             const response = await fetch('http://localhost:4444/api/transactions/delete', {
                 method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({id}),

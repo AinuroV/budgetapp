@@ -1,21 +1,22 @@
 import { useState } from 'react';
-import { 
-  Container, 
-  Row, 
-  Col, 
-  Card, 
-  Table, 
-  Button, 
-  Form, 
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Table,
+  Button,
+  Form,
   InputGroup,
   Badge,
-  Spinner
+  Spinner,
+  Dropdown
 } from 'react-bootstrap';
-import {useTransactionsStore} from '../../store/transactions.store';
-import {useCategoriesStore} from '../../store/categories.store';
-import {useUIStore} from '../../store/ui.store';
-import {TransactionModal} from '../../components/Modals/TransactionModal';
-
+import { useTransactionsStore } from '../../store/transactions.store';
+import { useCategoriesStore } from '../../store/categories.store';
+import { useUIStore } from '../../store/ui.store';
+import { TransactionModal } from '../../components/Modals/TransactionModal';
+import { ConfirmModal } from '../../components/Modals/ConfirmModal';
 
 // Вспомогательная функция для получения названия месяца
 const getMonthName = (monthIndex) => {
@@ -42,13 +43,16 @@ export function TransactionsPage() {
     setFilter,
     pagination,
     setPage,
-    filters
+    filters,
+    deleteTransaction
   } = useTransactionsStore();
 
   const { getCategoryById, expenseCategories, incomeCategories } = useCategoriesStore();
   const { openModal } = useUIStore();
 
   const [localSearch, setLocalSearch] = useState('');
+  const [transactionToEdit, setTransactionToEdit] = useState(null);
+  const [transactionToDelete, setTransactionToDelete] = useState(null);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -79,6 +83,18 @@ export function TransactionsPage() {
     return category?.color || '#6c757d';
   };
 
+  const handleEditTransaction = (transaction) => {
+    setTransactionToEdit(transaction);
+    openModal('transaction');
+  };
+
+  const handleDeleteTransaction = async () => {
+    if (transactionToDelete) {
+      await deleteTransaction(transactionToDelete.id);
+      setTransactionToDelete(null);
+    }
+  };
+
   const displayTransactions = filteredTransactions;
 
   return (
@@ -88,9 +104,12 @@ export function TransactionsPage() {
           <h1>Все транзакции</h1>
         </Col>
         <Col xs="auto">
-          <Button 
+          <Button
             variant="primary"
-            onClick={() => openModal('transaction')}
+            onClick={() => {
+              setTransactionToEdit(null);
+              openModal('transaction');
+            }}
           >
             Добавить транзакцию
           </Button>
@@ -157,8 +176,8 @@ export function TransactionsPage() {
                       value={localSearch}
                       onChange={(e) => setLocalSearch(e.target.value)}
                     />
-                    <Button 
-                      variant="outline-secondary" 
+                    <Button
+                      variant="outline-secondary"
                       type="submit"
                     >
                       Найти
@@ -170,8 +189,8 @@ export function TransactionsPage() {
           </Row>
 
           <div className="d-flex justify-content-end mt-3">
-            <Button 
-              variant="outline-secondary" 
+            <Button
+              variant="outline-secondary"
               className="me-2"
               onClick={resetFilters}
             >
@@ -203,6 +222,7 @@ export function TransactionsPage() {
                       <th>Тип</th>
                       <th>Категория</th>
                       <th className="text-end">Сумма</th>
+                      <th className="text-end">Действия</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -212,9 +232,9 @@ export function TransactionsPage() {
                         <td>{t.description || '-'}</td>
                         <td>{t.type === 'income' ? 'Доход' : 'Расход'}</td>
                         <td>
-                          <span 
+                          <span
                             className='badge'
-                            style={{ 
+                            style={{
                               backgroundColor: `${getCategoryColor(t.category_id)}20`,
                               color: getCategoryColor(t.category_id)
                             }}
@@ -225,6 +245,24 @@ export function TransactionsPage() {
                         <td className={`text-end fw-bold ${t.type === 'income' ? 'text-success' : 'text-danger'}`}>
                           {t.type === 'income' ? '+' : '-'}
                           {t.amount.toLocaleString('ru-RU')} ₽
+                        </td>
+                        <td className="text-end">
+                          <Dropdown>
+                            <Dropdown.Toggle variant="link" id="dropdown-actions" className="text-dark">
+                              <i className="bi bi-three-dots-vertical"></i>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              <Dropdown.Item onClick={() => handleEditTransaction(t)}>
+                                <i className="bi bi-pencil me-2"></i>Редактировать
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                onClick={() => setTransactionToDelete(t)}
+                                className="text-danger"
+                              >
+                                <i className="bi bi-trash me-2"></i>Удалить
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
                         </td>
                       </tr>
                     ))}
@@ -238,32 +276,32 @@ export function TransactionsPage() {
                   <nav>
                     <ul className="pagination">
                       <li className={`page-item ${pagination.currentPage === 1 ? 'disabled' : ''}`}>
-                        <button 
-                          className="page-link" 
+                        <button
+                          className="page-link"
                           onClick={() => setPage(pagination.currentPage - 1)}
                           disabled={pagination.currentPage === 1}
                         >
                           Назад
                         </button>
                       </li>
-                      
+
                       {Array.from({ length: Math.ceil(pagination.totalItems / pagination.itemsPerPage) }).map((_, i) => (
-                        <li 
-                          key={i} 
+                        <li
+                          key={i}
                           className={`page-item ${pagination.currentPage === i + 1 ? 'active' : ''}`}
                         >
-                          <button 
-                            className="page-link" 
+                          <button
+                            className="page-link"
                             onClick={() => setPage(i + 1)}
                           >
                             {i + 1}
                           </button>
                         </li>
                       ))}
-                      
+
                       <li className={`page-item ${pagination.currentPage * pagination.itemsPerPage >= pagination.totalItems ? 'disabled' : ''}`}>
-                        <button 
-                          className="page-link" 
+                        <button
+                          className="page-link"
                           onClick={() => setPage(pagination.currentPage + 1)}
                           disabled={pagination.currentPage * pagination.itemsPerPage >= pagination.totalItems}
                         >
@@ -279,7 +317,18 @@ export function TransactionsPage() {
         </Card.Body>
       </Card>
 
-      <TransactionModal />
+      <TransactionModal
+        transaction={transactionToEdit}
+        onClose={() => setTransactionToEdit(null)}
+      />
+
+      <ConfirmModal
+        show={!!transactionToDelete}
+        onHide={() => setTransactionToDelete(null)}
+        onConfirm={handleDeleteTransaction}
+        title="Удаление транзакции"
+        message={`Вы уверены, что хотите удалить транзакцию от ${transactionToDelete ? formatDateWithMonth(transactionToDelete.date) : ''} на сумму ${transactionToDelete?.amount} ₽?`}
+      />
     </Container>
   );
 }

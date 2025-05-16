@@ -6,14 +6,18 @@ import { useBudgetStore } from '../../store/budget.store';
 import { useUIStore } from '../../store/ui.store';
 import { useEffect } from 'react';
 
-export function TransactionModal() {
-    const { addTransaction, isLoading: isAdding } = useTransactionsStore();
-    const { setMonthlyBudget,monthlyBudget } = useBudgetStore()
+export function TransactionModal({ transaction, onClose }) {
+    const { 
+        addTransaction, 
+        updateTransaction, 
+        isLoading: isProcessing 
+    } = useTransactionsStore();
+    const { setMonthlyBudget, monthlyBudget } = useBudgetStore();
     const { expenseCategories, incomeCategories, fetchCategories } = useCategoriesStore();
     const { currentModal, closeModal } = useUIStore();
     const isOpen = currentModal === 'transaction';
 
-    const balance = Number(monthlyBudget?.amount)
+    const balance = Number(monthlyBudget?.amount);
 
     const {
         register,
@@ -34,27 +38,50 @@ export function TransactionModal() {
 
     const transactionType = watch('type');
 
-    // Загружаем категории при открытии модалки
+    // Инициализация формы при открытии модалки
     useEffect(() => {
         if (isOpen) {
             fetchCategories();
-            reset(); // Сбрасываем форму при каждом открытии
+            
+            if (transaction) {
+                // Редактирование существующей транзакции
+                setValue('type', transaction.type);
+                setValue('category_id', transaction.category_id);
+                setValue('amount', transaction.amount);
+                setValue('date', transaction.date.split('T')[0]);
+                setValue('description', transaction.description);
+            } else {
+                // Создание новой транзакции
+                reset();
+            }
         }
-    }, [isOpen, fetchCategories, reset]);
+    }, [isOpen, transaction, fetchCategories, setValue, reset]);
 
     const onSubmit = async (data) => {
-        const success = await addTransaction({
+        const transactionData = {
             type: data.type,
             amount: Number(data.amount),
             date: data.date,
             description: data.description,
             category_id: data.category_id
-        });
+        };
 
-        const successBudget = await setMonthlyBudget(Number(data.amount)+balance)
+        let success = false;
+        
+        if (transaction) {
+            // Обновление существующей транзакции
+            success = await updateTransaction(transaction.id, transactionData);
+        } else {
+            // Добавление новой транзакции
+            success = await addTransaction(transactionData);
+            if (success) {
+                await setMonthlyBudget(Number(data.amount) + balance);
+            }
+        }
 
-        if (success && successBudget) {
+        if (success) {
             closeModal('transaction');
+            onClose?.();
         }
     };
 
@@ -70,9 +97,14 @@ export function TransactionModal() {
     }, [transactionType, expenseCategories, incomeCategories, setValue]);
 
     return (
-        <Modal show={isOpen} onHide={() => closeModal('transaction')}>
+        <Modal show={isOpen} onHide={() => {
+            closeModal('transaction');
+            onClose?.();
+        }}>
             <Modal.Header closeButton>
-                <Modal.Title>Добавить транзакцию</Modal.Title>
+                <Modal.Title>
+                    {transaction ? 'Редактировать транзакцию' : 'Добавить транзакцию'}
+                </Modal.Title>
             </Modal.Header>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <Modal.Body>
@@ -174,17 +206,20 @@ export function TransactionModal() {
                 <Modal.Footer>
                     <Button
                         variant="secondary"
-                        onClick={() => closeModal('transaction')}
-                        disabled={isAdding}
+                        onClick={() => {
+                            closeModal('transaction');
+                            onClose?.();
+                        }}
+                        disabled={isProcessing}
                     >
                         Отмена
                     </Button>
                     <Button
                         variant="primary"
                         type="submit"
-                        disabled={isAdding}
+                        disabled={isProcessing}
                     >
-                        {isAdding ? (
+                        {isProcessing ? (
                             <>
                                 <Spinner
                                     as="span"
@@ -193,9 +228,11 @@ export function TransactionModal() {
                                     role="status"
                                     aria-hidden="true"
                                 />
-                                <span className="ms-2">Добавляем...</span>
+                                <span className="ms-2">
+                                    {transaction ? 'Обновляем...' : 'Добавляем...'}
+                                </span>
                             </>
-                        ) : 'Добавить'}
+                        ) : transaction ? 'Обновить' : 'Добавить'}
                     </Button>
                 </Modal.Footer>
             </Form>
